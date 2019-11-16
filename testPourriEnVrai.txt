@@ -1,5 +1,0 @@
-Salut Yohann,
-
-Je chercher à tester si github c'est vraiment open bar sur les repo public ou si t'as moyen d'empecher des abrutis (tel que l'auteur de cette ligne) de commit n'importe quoi.
-
-A plus.
