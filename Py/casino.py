@@ -32,8 +32,12 @@ def Pick_Money():
     casino()
 
 def Go_Sleep():
+    time.sleep(2)
     print("Vous allez dormir.")
+    time.sleep(5)
     print("Bonne Nuitée !")
+    time.sleep(5)
+    print("ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ")
 
 
 def Go_Out():
