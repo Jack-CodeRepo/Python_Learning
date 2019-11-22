@@ -47,9 +47,9 @@ def Pick_Money():
             print("Vous partez de chez vous avec ", money, " Brouzoufes.")
             print("=>")
             break
-        else:
-            print("Vous partez de chez vous avec ", money, " Brouzoufes.")
-            print("=>")
+
+    print("Vous partez de chez vous avec ", money, " Brouzoufes.")
+    print("=>")
 
 
 
