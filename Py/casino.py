@@ -10,7 +10,7 @@
 #   INPORT
 # ===================================================================================================
 
-from casino_fonctions import Go_Out
+from casiPackg import casino_fonctions
 
 
 
@@ -18,4 +18,4 @@ from casino_fonctions import Go_Out
 # #   Appel des fonctions
 # # ===================================================================================================
 
-Go_Out()
+casino_fonctions.Go_Out()
