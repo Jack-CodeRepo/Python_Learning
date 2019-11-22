@@ -41,7 +41,7 @@ def Pick_Money():
             continue
         if money == 666:
             print("C'est le nombre d'un homme. Relisez l'Apocalypse de Saint Jean.")
-            money = 0
+            money = -1
         elif money == 777:
             print("Ca porte bonheur. Vous pouvez prendre ce montant. Bonne chance.")
             print("Vous partez de chez vous avec ", money, " Brouzoufes.")
