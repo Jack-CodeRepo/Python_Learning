@@ -1,5 +1,12 @@
 # -*- coding: utf-8 -*-
-
+# ===================================================================================================
+#   
+#
+#
+#
+#
+#
+# ===================================================================================================
 
 # ===================================================================================================
 #   INPORT
@@ -14,33 +21,6 @@ import time
 # ===================================================================================================
 #   Declarations des fonctions
 # ===================================================================================================
-
-def Go_Out():
-    print("Vous vous ennuyez.")
-    time.sleep(5)
-    print("Vous vous ennuyez. BEAUCOUP")
-    time.sleep(5)
-    activity = -1
-    while activity == -1:
-        print("============================================================")
-        print("Saisissez ce que vous souhaitez faire:")
-        activity = input("1) Dormir  2) Aller au Bar  3) Aller voir les Dames_Qui_Vendent_Du_Bonheur  4) Aller au Casino: ")
-        print("=>")
-        try:
-            activity = int(activity)
-        except ValueError:
-            print("Saisissez un chiffre.")
-            activity = -1
-        if activity == 1:
-            Go_Sleep()
-        if activity == 2:
-            Go_Bar()
-        if activity == 3:
-            Go_Whores()
-        if activity == 4:
-            casino()
-
-
 
 def Go_Sleep():
     time.sleep(2)
@@ -77,25 +57,56 @@ def Pick_Money():
 
 
 def Go_Bar():
-    Pick_Money()
+    print("Off I Go.")
 
 
 
 def Go_Whores():
-    Pick_Money()
+    print("Let's go beaches!")
 
 
 
 def casino():
-    Pick_Money()
     time.sleep(3)
+    print("============================================================")
     print("Vous voilà au casino.")
     time.sleep(3)
     print("RECTIFICATION: vous voilà dans un casino où il n'y a que des roulettes !")
 
 
 
+def Go_Out():
+    print("Vous vous ennuyez.")
+    time.sleep(5)
+    print("Vous vous ennuyez. BEAUCOUP")
+    time.sleep(5)
+    activity = -1
+    while activity == -1:
+        print("============================================================")
+        print("Saisissez ce que vous souhaitez faire:")
+        activity = input("1) Dormir  2) Aller au Bar  3) Aller voir les Dames_Qui_Vendent_Du_Bonheur  4) Aller au Casino: ")
+        print("=>")
+        try:
+            activity = int(activity)
+        except ValueError:
+            print("Saisissez un chiffre.")
+            activity = -1
+        if activity == 1:
+            Go_Sleep()
+        if activity == 2:
+            Pick_Money()
+            Go_Bar()
+        if activity == 3:
+            Pick_Money()
+            Go_Whores()
+        if activity == 4:
+            Pick_Money()
+            casino()
+
+
+
 # ===================================================================================================
 #   Appel des fonctions
 # ===================================================================================================
+
 Go_Out()
