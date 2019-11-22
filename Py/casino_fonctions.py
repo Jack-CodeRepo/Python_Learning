@@ -13,40 +13,44 @@ import time
 #   Declarations des fonctions
 # ===================================================================================================
 
-def Go_Sleep():
-    time.sleep(2)
-    print("Vous allez dormir.")
-    time.sleep(5)
-    print("Bonne Nuitée !")
-    time.sleep(5)
-    print("ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ")
+# def Go_Sleep():
+#     time.sleep(2)
+#     print("Vous allez dormir.")
+#     time.sleep(5)
+#     print("Bonne Nuitée !")
+#     time.sleep(5)
+#     print("ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ")
 
 
 
 def Pick_Money():
-    cnt = 0
+
     print("Vous decidez de sortir et de prendre de l'argent.")
 
-    while cnt == 0:
+    money = -1
+
+    while money <=0 or money > 100:
         print("============================================================")
         money = input("Saissisez un montant de départ compris entre 1 et 100: ")
+        time.sleep(3)
         try:
             money = int(money)
         except ValueError:
             print("Saisissez un chiffre.")
+            money = -1
+            continue
         if money == 666:
             print("C'est le nombre d'un homme. Relisez l'Apocalypse de Saint Jean.")
-            cnt = 0
+            money = 0
         elif money == 777:
             print("Ca porte bonheur. Vous pouvez prendre ce montant. Bonne chance.")
+            print("Vous partez de chez vous avec ", money, " Brouzoufes.")
             print("=>")
             break
-        elif money <= 0:
-            print("Saisissez un chiffre superieur a 0.")
         else:
             print("Vous partez de chez vous avec ", money, " Brouzoufes.")
             print("=>")
-            cnt = -1
+
 
 
 
@@ -71,9 +75,9 @@ def casino():
 
 def Go_Out():
     print("Vous vous ennuyez.")
-    time.sleep(5)
+    time.sleep(3)
     print("Vous vous ennuyez. BEAUCOUP")
-    time.sleep(5)
+    time.sleep(3)
     activity = -1
     while activity == -1:
         print("============================================================")
