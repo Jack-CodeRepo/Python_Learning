@@ -6,9 +6,6 @@
 #   INPORT
 # ===================================================================================================
 
-import os
-import random
-import math
 import time
 
 
@@ -27,26 +24,29 @@ def Go_Sleep():
 
 
 def Pick_Money():
-    money = -1
-    print("Vous décidez de sortir et de prendre de l'argent.")
+    cnt = 0
+    print("Vous decidez de sortir et de prendre de l'argent.")
 
-    while money <= 0 or money > 100:
+    while cnt == 0:
         print("============================================================")
-        money = input("Saissisez un montant de départ compris entre 1 et 100:: ")
-        print("=>")
+        money = input("Saissisez un montant de départ compris entre 1 et 100: ")
         try:
             money = int(money)
         except ValueError:
             print("Saisissez un chiffre.")
-            money = -1
         if money == 666:
             print("C'est le nombre d'un homme. Relisez l'Apocalypse de Saint Jean.")
-            money = -1
-
-        if money == 777:
+            cnt = 0
+        elif money == 777:
             print("Ca porte bonheur. Vous pouvez prendre ce montant. Bonne chance.")
+            print("=>")
             break
-    print("Vous partez de chez vous avec ", money, " Brouzoufes.")
+        elif money <= 0:
+            print("Saisissez un chiffre superieur a 0.")
+        else:
+            print("Vous partez de chez vous avec ", money, " Brouzoufes.")
+            print("=>")
+            cnt = -1
 
 
 
