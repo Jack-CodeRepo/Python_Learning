@@ -10,7 +10,9 @@
 #   INPORT
 # ===================================================================================================
 
-from casiPackg import casino_fonctions
+import sys
+
+from casiPackg import startEvent
 
 
 
@@ -18,4 +20,4 @@ from casiPackg import casino_fonctions
 # #   Appel des fonctions
 # # ===================================================================================================
 
-casino_fonctions.Go_Out()
+startEvent.Go_Out()
