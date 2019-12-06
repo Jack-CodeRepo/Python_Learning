@@ -3,12 +3,12 @@
 
 
 # ===================================================================================================
-#   INPORT
+#   IMPORT
 # ===================================================================================================
 
 import time
-from .eventFonctions import home_fonctions
 from .eventFonctions import casino_fonctions
+from .eventFonctions import home_fonctions
 
 # ===================================================================================================
 #   Declarations des fonctions
@@ -41,7 +41,7 @@ def Go_Out():
             print("Saisissez un chiffre.")
             activity = -1
         if activity == 1:
-            home_fonctions.Go_Sleep
+            home_fonctions.Go_Sleep()
         if activity == 2:
             home_fonctions.Pick_Money()
             Go_Bar()
