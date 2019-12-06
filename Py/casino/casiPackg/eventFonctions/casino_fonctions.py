@@ -80,5 +80,7 @@ def play_casino():
             print("Vous gagnez votre mise ainsi que ", mise*3," Brouzoufes.")
         elif caseBille % 2 == chiffreMise % 2:
             money = mise + ceil(mise * 0.5)
+            print("Vous gagnez votre mise ainsi que ", mise*0.5," Brouzoufes.")
         else:
+            print("Vous perdez votre mise (", mise," Brouzoufes).")
             money = money - mise
