@@ -47,6 +47,3 @@ def Pick_Money():
     print("Vous partez de chez vous avec ", money, " Brouzoufes.")
     print("=>")
     return money
-
-def Go_Street():
-    print("Vous sortez et vous retrouvez dans la rue.")

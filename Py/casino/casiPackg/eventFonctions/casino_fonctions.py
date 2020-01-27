@@ -9,31 +9,10 @@
 import time
 from random import randrange
 from math import ceil
-from .home_fonctions import Go_Street
-from .home_fonctions import Pick_Money
 
 # ===================================================================================================
 #   Declarations des fonctions
 # ===================================================================================================
-
-def casino():
-    time.sleep(3)
-    print("============================================================")
-    print("Vous voilà au casino.")
-    time.sleep(3)
-    print("RECTIFICATION: vous voilà dans un casino où il n'y a que des roulettes !")
-
-    jeu = -1
-    jeu = input("Voulez-vous jouer à la roulette ? 1) Oui  2) Non: ")
-    try:
-        jeu = int(jeu)
-    except ValueError:
-        print("Saisissez un chiffre.")
-        jeu = -1
-    if jeu == 1:
-        play_casino()
-    else:
-        Go_Street()
 
 def chiffreMiser():
     chiffreMise = -1
@@ -48,6 +27,8 @@ def chiffreMiser():
             print("Saisissez un nombre compris entre et 49.")
             chiffreMise = -1
     return chiffreMise
+
+
 
 def montantMiser(moneyPick):
     mise = -1
@@ -66,9 +47,18 @@ def montantMiser(moneyPick):
             mise = -1
     return mise
 
-def play_casino():
+
+def casino(money):
+    time.sleep(3)
+    print("============================================================")
+    print("Vous voilà au casino.")
+    time.sleep(3)
+    print("RECTIFICATION: vous voilà dans un casino où il n'y a que des roulettes !")
+    time.sleep(3)
+    print("Vous vous asseyez à une table.")
+
     jouer = True
-    money = Pick_Money()
+    money = money
     while jouer == True:
         chiffreMise = chiffreMiser()
         mise = montantMiser(money)
@@ -80,7 +70,20 @@ def play_casino():
             print("Vous gagnez votre mise ainsi que ", mise*3," Brouzoufes.")
         elif caseBille % 2 == chiffreMise % 2:
             money = mise + ceil(mise * 0.5)
-            print("Vous gagnez votre mise ainsi que ", mise*0.5," Brouzoufes.")
+            print("Vous gagnez votre mise ainsi que ", ceil(mise*0.5)," Brouzoufes.")
         else:
             print("Vous perdez votre mise (", mise," Brouzoufes).")
             money = money - mise
+        keepPlay = input("Saouhaitez vous continuer à jouer? 1) Oui  2) Non: ")
+        try:
+            mise = int(mise)
+        except ValueError:
+            print("Saisissez un chiffre.")
+            mise = -1
+        if keepPlay == 2:
+            print("Vous quittez le Casino")
+            jouer == False
+        else:
+            print("    ")
+            print("Et c'est reparti pour un tour !")
+            print("    ")
