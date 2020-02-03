@@ -7,7 +7,10 @@
 # ===================================================================================================
 
 import time
+
 from .eventFonctions import street_fonctions
+from .eventFonctions import home_fonctions
+
 
 # ===================================================================================================
 #   Declarations des fonctions
@@ -17,7 +20,7 @@ def Pick_Money():
     print("Vous decidez de sortir et de prendre de l'argent.")
     money = -1
     while money <=0 or money > 100:
-        print("============================================================")
+        print(" ")
         money = input("Saissisez un montant de départ compris entre 1 et 100: ")
         time.sleep(3)
         try:
@@ -36,6 +39,8 @@ def Pick_Money():
     print("Vous partez de chez vous avec ", money, " Brouzoufes.")
     return money
 
+
+
 def Go_Sleep():
     time.sleep(2)
     print("Vous allez dormir.")
@@ -46,8 +51,6 @@ def Go_Sleep():
 
 
 
-
-
 def Go_Out():
     print("Vous vous ennuyez.")
     time.sleep(3)
@@ -55,17 +58,22 @@ def Go_Out():
     time.sleep(3)
     activity = -1
     while activity == -1:
-        print("============================================================")
+        print(" ")
         print("Saisissez ce que vous souhaitez faire: ")
-        activity = input(" 1) Dormir  2) Sortir: ")
+        activity = input(" 1) Rester chez vous  2) Sortir: ")
         try:
             activity = int(activity)
         except ValueError:
             print("Saisissez un chiffre.")
             activity = -1
         if activity == 1:
-            Go_Sleep()
+            home_fonctions.homeActivity()
         if activity == 2:
             money = Pick_Money()
             street_fonctions.Go_Street(money)
 
+
+
+# ===================================================================================================
+#   Script
+# ===================================================================================================
