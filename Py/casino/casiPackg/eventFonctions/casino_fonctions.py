@@ -74,12 +74,11 @@ def casino(money):
         else:
             print("Vous perdez votre mise (", mise," Brouzoufes).")
             money = money - mise
-        keepPlay = input("Saouhaitez vous continuer à jouer? 1) Oui  2) Non: ")
+        keepPlay = input("Souhaitez vous continuer à jouer? 1) Oui  2) Non: ")
         try:
-            mise = int(mise)
+            keepPlay = int(keepPlay)
         except ValueError:
             print("Saisissez un chiffre.")
-            mise = -1
         if keepPlay == 2:
             print("Vous quittez le Casino")
             jouer == False
