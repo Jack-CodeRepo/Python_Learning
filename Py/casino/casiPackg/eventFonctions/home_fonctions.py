@@ -13,6 +13,11 @@ import time
 #   Declarations des fonctions
 # ===================================================================================================
 
+def film():
+    print("FILM_CODEaREVOIR_FILM")
+
+
+
 def Go_Sleep():
     time.sleep(2)
     print("Vous allez dormir.")
@@ -23,27 +28,33 @@ def Go_Sleep():
 
 
 
-def Pick_Money():
-    print("Vous decidez de sortir et de prendre de l'argent.")
-    money = -1
-    while money <=0 or money > 100:
-        print("============================================================")
-        money = input("Saissisez un montant de départ compris entre 1 et 100: ")
-        time.sleep(3)
+def pendu():
+    print("Vous jouez au pendu")
+
+
+
+def homeActivity():
+    home = -1
+    while home == -1:
+        print("Vous décidez de rester chez vous.")
+        print("Que souhaitez vous faire :")
+        homeDo = input("1) Regarder un film  2) Jouer au pendu  3) Dormir.")
         try:
-            money = int(money)
+            homeDo = int(homeDo)
         except ValueError:
             print("Saisissez un chiffre.")
-            money = -1
-            continue
-        if money == 666:
-            print("C'est le nombre d'un homme. Relisez l'Apocalypse de Saint Jean.")
-            money = -1
-        elif money == 777:
-            print("Ca porte bonheur. Vous pouvez prendre ce montant. Bonne chance.")
-            print("Vous partez de chez vous avec ", money, " Brouzoufes.")
-            print("=>")
-            break
-    print("Vous partez de chez vous avec ", money, " Brouzoufes.")
-    print("=>")
-    return money
+            homeDo = -1
+        if homeDo < 0 or homeDo > 4:
+            print("Saisissez un nombre de 1 à 4.")
+            homeDo = -1
+        if homeDo == 1:
+            film()
+        if homeDo == 2:
+            pendu()
+        if homeDo == 3:
+            Go_Sleep()
+
+
+# ===================================================================================================
+#   Script
+# ===================================================================================================
