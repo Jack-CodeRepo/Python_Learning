@@ -12,7 +12,7 @@
 
 import sys
 
-from casiPackg import startEvent
+from .casiPackg import startEvent
 
 
 # ===================================================================================================
