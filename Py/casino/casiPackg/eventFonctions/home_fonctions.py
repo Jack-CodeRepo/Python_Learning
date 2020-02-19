@@ -7,7 +7,7 @@
 # ===================================================================================================
 
 import time
-
+from .pendu_fonctions import pendu
 
 # ===================================================================================================
 #   Declarations des fonctions
@@ -25,11 +25,6 @@ def Go_Sleep():
     print("Bonne Nuitée !")
     time.sleep(5)
     print("ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ")
-
-
-
-def pendu():
-    print("Vous jouez au pendu")
 
 
 
