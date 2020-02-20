@@ -24,5 +24,4 @@ import pendu_fonctions
 print("Vous jouez au pendu")
 name = input("Renseignez votre nom: ")
 
-fichier = pendu_fonctions.checkFile(name)
-score = pendu_fonctions.joueurExist(name, fichier)
+pendu_fonctions.checkFile(name)
