@@ -13,15 +13,17 @@ import re
 #   Declarations des fonctions
 # ===================================================================================================
 
-def checkFile():
-    nomFichier = "score"
-    if os.path.isfile(nomFichier):
-        return nomFichier
-    else:
-        fichier = open("score", "a")
-        print("Le fichier ", fichier, " a été créé")
-        fichier.close()
+def checkFile(playerName):
+    if not os.path.exists("score.txt"):
+        fichier = open("score.txt", "w")
+        print("Le fichier de sauvegarde a été créé")
+        fichier.write(playerName + ".")
         return fichier
+    elif os.path.exists("score.txt"):
+        print("Le fichier de sauvegarde existe")
+    else:
+        print("VDM le_code_plante VDM")
+
 
 def joueurExist(playerName,fichier):
     f = open("fichier", "r")
