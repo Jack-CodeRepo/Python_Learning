@@ -7,7 +7,7 @@
 # ===================================================================================================
 
 import os
-import pendu_fonctions
+from .pendu_fonctions import checkFile
 
 
 # ===================================================================================================
@@ -24,4 +24,4 @@ import pendu_fonctions
 print("Vous jouez au pendu")
 name = input("Renseignez votre nom: ")
 
-pendu_fonctions.checkFile(name)
+checkFile(name)
