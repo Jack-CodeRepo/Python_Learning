@@ -7,8 +7,8 @@
 # ===================================================================================================
 
 import os
-import pendu_fonctions
 
+import pendu_donnees
 
 # ===================================================================================================
 #   Declarations des fonctions
@@ -21,7 +21,4 @@ import pendu_fonctions
 # ===================================================================================================
 
 
-print("Vous jouez au pendu")
-name = input("Renseignez votre nom: ")
 
-pendu_fonctions.checkFile(name)
