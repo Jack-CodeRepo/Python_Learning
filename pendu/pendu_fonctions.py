@@ -56,40 +56,15 @@ def chose_letter():
         print("merci de saisir une lettre")
     if len(letterPick) !=1:
             print("vous avez renseigné plsuieurs charactere. merci de saisir une seule lettre.")
+
+
     return letterPick
 
 
-# controle si la lettre est présent dans la string éword" spécifiée en argument
-
-def le_jeu_du_pendu:
-    
-    print("Vous jouez au pendu")
-    name = input("Renseignez votre nom: ")
-
-    score = pendu_fonctions.checkFile(name)
-
-    print("nom du joueur est: ", name, "et son score est: ", score)
-
-    word = random.choice(pendu_donnees.listeMots)
-    lgtWord = len(word)
-    print("Le mot à deviner contient ", lgtWord, "lettres.")
-
-    hiddenword = ""
-    for i in range(0, lgtWord):
-        hiddenword += "_"
-
-    letterPickList = []
-    letterPick = pendu_fonctions.chose_letter()
-    letterPickList += letterPick
-
-    hiddenword, score = letter_check(hiddenword, score)
-
-
-def letter_check(hiddenword, score):
+def letter_check(hiddenword, score, word, letterPick):
     result = ""
     if letterPick in word:
-        score += 1
-        for i in range(0, lgtWord):
+        for i in range(0, len(word)):
             if word[i] == letterPick:
                 result += letterPick
             else:
@@ -101,6 +76,47 @@ def letter_check(hiddenword, score):
         else:
             score -= 1
             return word, score
+
+
+
+
+
+# controle si la lettre est présent dans la string "word" spécifiée en argument
+
+def le_jeu_du_pendu():
+    jeu = True
+    atempt = 10
+
+    print("Vous jouez au pendu")
+    name = input("Renseignez votre nom: ")
+    score = checkFile(name)
+    print("nom du joueur est: ", name, "et son score est: ", score)
+    word = random.choice(pendu_donnees.listeMots)
+    lgtWord = len(word)
+    print("Le mot à deviner contient ", lgtWord, "lettres.")
+    hiddenword = ""
+    for i in range(lgtWord):
+        hiddenword += "-"
+    letterPickList = []
+
+
+    while jeu == True:
+        atempt -=1
+        if atempt != 0:
+            letterPick = chose_letter()
+            letterPickList += letterPick
+
+            hiddenword, score = letter_check(hiddenword, score, word, letterPick)
+
+            print(hiddenword, "", score)
+        elif atempt == 1:
+            print("Attention! Derniere chance!")
+        else:
+            jeu = False
+
+
+
+
 
 
 
