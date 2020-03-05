@@ -15,6 +15,7 @@ class person:
         return self.sexe
 
 
+# la classe "teacher" hérite des attributs et méthodes de la class "person"
 class teacher(person):
     def __init__(self, nom, prenom, craie, sexe):
         super().__init__(nom, prenom, sexe)
