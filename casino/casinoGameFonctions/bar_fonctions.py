@@ -14,7 +14,9 @@ import time
 # ===================================================================================================
 
 def Go_Bar(money):
-    print("Off I Go.")
+    print("Off to the Pub I Go.")
+    time.sleep(5)
+    print("Mais si vous êtes français, considerez que vous irez au bistrot")
 
 
 

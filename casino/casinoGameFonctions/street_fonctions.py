@@ -8,11 +8,6 @@
 
 import time
 
-from .home_fonctions import Go_Sleep
-from .casino_fonctions import casino
-from .dames_fonctions import Go_Whores
-from .bar_fonctions import Go_Bar
-
 
 # ===================================================================================================
 #   Declarations des fonctions
