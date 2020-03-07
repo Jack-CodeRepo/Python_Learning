@@ -16,6 +16,31 @@ from math import ceil
 #   Declarations des fonctions
 # ===================================================================================================
 
+
+def Pick_Money():
+    print("Vous decidez de sortir et de prendre de l'argent.")
+    money = -1
+    while money <=0 or money > 100:
+        print(" ")
+        money = input("Saissisez un montant de départ compris entre 1 et 100: ")
+        time.sleep(3)
+        try:
+            money = int(money)
+        except ValueError:
+            print("Saisissez un chiffre.")
+            money = -1
+        if money == 666:
+            print("C'est le nombre d'un homme. Relisez l'Apocalypse de Saint Jean.")
+            money = -1
+            time.sleep(1)
+        elif money == 777:
+            print("Ca porte bonheur. Vous pouvez prendre ce montant. Bonne chance.")
+            time.sleep(1)
+            break
+    print("Vous partez de chez vous avec ", money, " Brouzoufes.")
+    return money
+
+
 def chiffreMiser():
     chiffreMise = -1
     while chiffreMise == -1:
