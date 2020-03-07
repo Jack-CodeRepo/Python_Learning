@@ -57,7 +57,7 @@ def chiffreMiser():
 
 
 
-def montantMiser(moneyPick):
+def montantMiser(money):
     mise = -1
     while mise == -1:
         mise = input("Saisissez le montant à miser: ")
@@ -66,7 +66,7 @@ def montantMiser(moneyPick):
         except ValueError:
             print("Saisissez un chiffre.")
             mise = -1
-        if mise > moneyPick:
+        if mise > money:
             print("Merci de saisir un montant inférieur ou égal à votre nombre Brouzoufes.")
             mise = -1
         if mise <= 0:
@@ -76,7 +76,7 @@ def montantMiser(moneyPick):
 
 
 
-def casino(moneyPick):
+def casino(money):
     time.sleep(3)
     print("Vous voilà au casino.")
     time.sleep(3)
@@ -85,7 +85,6 @@ def casino(moneyPick):
     print("Vous vous asseyez à une table.")
 
     jouer = True
-    money = moneyPick
     while jouer == True:
         chiffreMise = chiffreMiser()
         mise = montantMiser(money)
@@ -109,6 +108,7 @@ def casino(moneyPick):
             print("Saisissez un chiffre.")
         if keepPlay == 2:
             print("Vous quittez le Casino")
+            exit()
             jouer == False
         else:
             print(" ")
@@ -120,3 +120,7 @@ def casino(moneyPick):
 # ===================================================================================================
 #   Script
 # ===================================================================================================
+
+money = Pick_Money()
+
+casino(money)
