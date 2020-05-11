@@ -21,7 +21,7 @@ def Pick_Money():
     print("Vous decidez de sortir et de prendre de l'argent.")
     money = -1
     while money <=0 or money > 100:
-        print(" ")
+        print()
         money = input("Saissisez un montant de départ compris entre 1 et 100: ")
         time.sleep(3)
         try:
@@ -111,9 +111,9 @@ def casino(money):
             exit()
             jouer == False
         else:
-            print(" ")
+            print()
             print("Et c'est reparti pour un tour !")
-            print(" ")
+            print()
 
 
 
