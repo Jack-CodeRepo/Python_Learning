@@ -14,8 +14,8 @@ import os
 #   Declarations des fonctions
 # ===================================================================================================
 
-listeMots = ["merde"]
-# listeMots = ["CoRde", "pIstolet", "DROGUE", "whiskEy"
+listeMots = ["Salut"]
+# listeMots = ["CoqueliCot", "BLEUET", "pissenliT", "PaQuErEtTe"
 
 # ===================================================================================================
 #   Script

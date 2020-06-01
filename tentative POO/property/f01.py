@@ -62,4 +62,8 @@ if __name__ in __name__ == "__main__":
 
 
 if not __name__ in __name__ == "__main__":
-    print("MDR LA VIE C'EST COMME LE SOLEIL CA VA DISPARAITRE")
+    print("Aujourd'hui il fait grand soleil.")
+
+
+# if not __name__ in __name__ == "__main__":
+#     print("MDR LA VIE C'EST COMME LE SOLEIL CA VA DISPARAITRE")
