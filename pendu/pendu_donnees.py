@@ -14,7 +14,7 @@ import os
 #   Declarations des fonctions
 # ===================================================================================================
 
-listeMots = ["Salut"]
+listeMots = ["Salut", "CouCou"]
 # listeMots = ["CoqueliCot", "BLEUET", "pissenliT", "PaQuErEtTe"
 
 # ===================================================================================================
