@@ -51,7 +51,7 @@ def chiffreMiser():
             print("Saisissez un chiffre.")
             chiffreMise = -1
         if chiffreMise < 0 or chiffreMise > 49:
-            print("Saisissez un nombre compris entre et 49.")
+            print("Saisissez un nombre compris entre 1 et 49.")
             chiffreMise = -1
     return chiffreMise
 
