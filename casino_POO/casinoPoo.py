@@ -7,6 +7,7 @@
 # ===================================================================================================
 import time
 
+
 from classes import money_class
 from fonctions.casino_fonctions import start_money
 
@@ -14,10 +15,5 @@ from fonctions.casino_fonctions import start_money
 #   Script
 # ===================================================================================================
 
-
-
 money = money_class.money(start_money())
-
-
 print("Vous commencez avec", money.get_amnt(), " euros")
-
