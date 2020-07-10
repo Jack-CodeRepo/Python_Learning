@@ -1,1 +1,1 @@
-Contient les petits projets pour apprendre python
+Contient des petits projets pour apprendre python
