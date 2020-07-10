@@ -31,21 +31,24 @@ print("RECTIFICATION: vous voilà dans un casino où il n'y a que des roulettes 
 time.sleep(1)
 print("Vous vous asseyez à une table.")
 
+#initialisation du controleur de la boucle de jeu
 jouer = True
+
+# debut de la boucle de jeu
 while jouer == True:
     print()
     time.sleep(1)
     mise = montantMiser(money_start.amnt)
-    caseCiblee = caseMiser()
+    caseCible = caseMiser()
     caseBille = random.randrange(50)
-    print("Vous misez ", mise," Brouzoufes sur le chiffre ", caseCiblee)
+    print("Vous misez ", mise," Brouzoufes sur le chiffre ", caseCible)
 
-    if caseBille == caseCiblee:
+    if caseBille == caseCible:
         gagne = mise * 3
         money_start.amnt_increase(gagne)
         print("Vous gagnez ", mise*3,". Argent restant: ", money_start.amnt)
 
-    elif caseBille % 2 == caseCiblee % 2:
+    elif caseBille % 2 == caseCible % 2:
         gagne = math.ceil(mise * 0.5)
         money_start.amnt_increase(gagne)
         print("Vous gagnez ", gagne,". Argent restant: ", money_start.amnt)
