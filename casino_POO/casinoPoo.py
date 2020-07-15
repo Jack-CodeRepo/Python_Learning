@@ -12,6 +12,7 @@ import math
 
 from classes import money_class
 from classes import roulette_class
+
 from fonctions.casino_fonctions import start_money
 from fonctions.casino_fonctions import caseMiser
 from fonctions.casino_fonctions import montantMiser
@@ -26,12 +27,8 @@ from fonctions.casino_fonctions import opt_roulette_max
 money_start = money_class.money(start_money())
 
 
-print()
-time.sleep(1)
 print("Vous voilà au casino.")
-time.sleep(1)
 print("RECTIFICATION: vous voilà dans un casino où il n'y a que des roulettes !")
-time.sleep(1)
 print("Vous vous asseyez à une table.")
 
 #initialisation du controleur de la boucle de jeu
@@ -44,7 +41,6 @@ caseRouletteMax = roulette_class.roulette(opt_roulette_max())
 # debut de la boucle de jeu
 while jouer == True:
     print()
-    time.sleep(1)
     # case de la roulette
     caseBille = random.randrange(caseRouletteMax.case)
     # montant d'argent misé
@@ -79,13 +75,10 @@ while jouer == True:
     
     if keepPlay == 2:
         print("Vous quittez le Casino")
-        time.sleep(1)
         jouer = False
 
     else:
-        print()
         print("Et c'est reparti pour un tour !")
-        print()
 
 print("Vous rentrez chez vous")
 exit()

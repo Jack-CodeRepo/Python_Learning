@@ -40,23 +40,18 @@ def start_money():
     
 
     moneystart = -1
-    print()
     print("Vous décidez d'aller au casino")
     while moneystart <=0 or moneystart > 100:
-        time.sleep(1)
-        print()
         moneystart = input("Saissisez un montant de départ compris entre 1 et 100: ")
         moneystart = test_int(moneystart)
         
         if moneystart == 666:
-            time.sleep(1)
             print("C'est le nombre d'un homme. Relisez l'Apocalypse de Saint Jean.")
 
         elif moneystart == 777:
-            print()
-            time.sleep(1)
             print("Ca porte bonheur. Vous pouvez prendre ce montant. Bonne chance.")
             break
+
     return moneystart
 
 
@@ -71,16 +66,16 @@ def caseMiser(max, min = 0):
         min: 
         return: le nombre de la case sur laquelle le joueur mise
     """
-    chiffreMise = -1
+    numCase = -1
 
-    while chiffreMise < min or chiffreMise > max:
-        chiffreMise = input("Saisissez le chiffre sur lequel vous misez: ")
-        chiffreMise = test_int(chiffreMise)
+    while numCase < min or numCase > max:
+        numCase = input("Saisissez le chiffre sur lequel vous misez: ")
+        numCase = test_int(numCase)
         
-        if chiffreMise < min or chiffreMise > max:
+        if numCase < min or numCase > max:
             print("Saisissez un nombre compris entre ", min, " et ", max, " .")
 
-    return chiffreMise
+    return numCase
 
 
 
@@ -99,11 +94,8 @@ def montantMiser(money):
         mise = input("Saisissez le montant à miser: ")
         mise = test_int(mise)
         
-        if mise <= 0:
-            print("Merci de saisir un montant supérieur à zéro.")
-
-        elif mise > money:
-            print("Merci de saisir un montant inférieur ou égal à votre nombre Brouzoufes.")
+        if mise <= 0 or mise > money:
+            print("Merci de saisir un montant supérieur à zéro et inférieur ou égal à ", money, ".")
 
     return mise
 
@@ -111,7 +103,7 @@ def montantMiser(money):
 
 def opt_roulette_max():
     """
-        
+        L utilisateur determine ou nom le nombre de case maximum de la roulette
     """
 
     y_n = -1
