@@ -7,27 +7,17 @@
 # ===================================================================================================
 
 # ===================================================================================================
-#   CLASS MONEY
+#   CLASS ROULETTE
 # ===================================================================================================
 
-class money:
+class roulette:
     """
     """
-    def __init__(self, amnt):
-        self.amnt = int(amnt)
+    def __init__(self, case):
+        self.case = int(case)
 
     def get_amnt(self):
         """
         """
-        return self.amnt
-    
-    def amnt_increase(self, incr):
-        """
-        """
-        self.amnt += incr
-
-    def amnt_decrease(self, decr):
-        """
-        """
-        self.amnt -= decr
+        return self.case
 

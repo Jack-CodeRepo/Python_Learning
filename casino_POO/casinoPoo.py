@@ -11,9 +11,12 @@ import random
 import math
 
 from classes import money_class
+from classes import roulette_class
 from fonctions.casino_fonctions import start_money
 from fonctions.casino_fonctions import caseMiser
 from fonctions.casino_fonctions import montantMiser
+from fonctions.casino_fonctions import opt_roulette_max
+
 
 # ==================================================================================================
 #   Script
@@ -34,13 +37,22 @@ print("Vous vous asseyez à une table.")
 #initialisation du controleur de la boucle de jeu
 jouer = True
 
+
+# nombre de case total de la roulette
+caseRouletteMax = roulette_class.roulette(opt_roulette_max())
+
 # debut de la boucle de jeu
 while jouer == True:
     print()
     time.sleep(1)
+    # case de la roulette
+    caseBille = random.randrange(caseRouletteMax.case)
+    # montant d'argent misé
     mise = montantMiser(money_start.amnt)
-    caseCible = caseMiser()
-    caseBille = random.randrange(50)
+    # case sur laquelle le joueur parie
+    caseCible = caseMiser(caseRouletteMax.case)
+
+
     print("Vous misez ", mise," Brouzoufes sur le chiffre ", caseCible)
 
     if caseBille == caseCible:
