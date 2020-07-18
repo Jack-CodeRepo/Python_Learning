@@ -13,7 +13,9 @@ import time
 #   DICTIONNARIES
 # ===================================================================================================
 
-messages = {
+messages_start_money = {
+    "start": "Vous décidez d'aller au casino.",
+    "input": "Saissisez un montant de départ compris entre 1 et 100: ",
     "666": "C'est le nombre d'un homme. Relisez l'Apocalypse de Saint Jean.",
     "777": "Ca porte bonheur. Vous pouvez prendre ce montant. Bonne chance."
 }
@@ -50,16 +52,16 @@ def start_money():
     
 
     moneystart = -1
-    print("Vous décidez d'aller au casino")
+    print(messages_start_money["start"])
     while moneystart <=0 or moneystart > 100:
-        moneystart = input("Saissisez un montant de départ compris entre 1 et 100: ")
+        moneystart = input(messages_start_money["input"])
         moneystart = test_int(moneystart)
         
         if moneystart == 666:
-            print(messages["666"])
+            print(messages_start_money["666"])
 
         elif moneystart == 777:
-            print(messages["777"])
+            print(messages_start_money["777"])
             break
 
     return moneystart
@@ -129,5 +131,3 @@ def opt_roulette_max():
             return 50
         else:
             print("saisissez 1  pour oui ou 2 pour non")
-    
-
