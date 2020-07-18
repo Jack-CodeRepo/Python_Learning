@@ -57,7 +57,7 @@ while jouer == True:
         print("Vous gagnez ", mise*3,". Argent restant: ", money_start.amnt)
 
     elif caseBille % 2 == caseCible % 2:
-        gagne = math.ceil(mise * 0.5)
+        gagne = math.ceil(mise * 1.5)
         money_start.amnt_increase(gagne)
         print("Vous gagnez ", gagne,". Argent restant: ", money_start.amnt)
 

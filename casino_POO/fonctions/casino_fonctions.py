@@ -8,6 +8,16 @@
 
 import time
 
+
+# ===================================================================================================
+#   DICTIONNARIES
+# ===================================================================================================
+
+messages = {
+    "666": "C'est le nombre d'un homme. Relisez l'Apocalypse de Saint Jean.",
+    "777": "Ca porte bonheur. Vous pouvez prendre ce montant. Bonne chance."
+}
+
 # ===================================================================================================
 #   Declarations des fonctions
 # ===================================================================================================
@@ -46,10 +56,10 @@ def start_money():
         moneystart = test_int(moneystart)
         
         if moneystart == 666:
-            print("C'est le nombre d'un homme. Relisez l'Apocalypse de Saint Jean.")
+            print(messages["666"])
 
         elif moneystart == 777:
-            print("Ca porte bonheur. Vous pouvez prendre ce montant. Bonne chance.")
+            print(messages["777"])
             break
 
     return moneystart
