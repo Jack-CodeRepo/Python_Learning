@@ -1,7 +1,7 @@
 import tkinter as tk
 import webbrowser as WB
 
-# fonction pour ouvrir un browser
+# fonction pour ouvrir un lien vers youtube
 def open_youtube():
     WB.open_new("https://www.youtube.com/")
 
