@@ -18,23 +18,23 @@ def generate_password():
 
 
 
-#fonction qui donne le meme resultat que generate_password()
-def generate_password_alt():
-    minLength=6
-    maxLength=24
-    password = ""
-    passwordList = []
-    all_char= string.ascii_letters + string.punctuation + string.digits
-    for x in range(random.randint(minLength, maxLength)):
-        passwordList.append(str(random.choice(all_char)))
-        x+=0    # le non usage de la varialbe 'x' renvois un warning dans l'IDE
-    password = password.join(passwordList)
-    print(password)
+# #fonction qui donne le meme resultat que generate_password()
+# def generate_password_alt():
+#     minLength=6
+#     maxLength=24
+#     password = ""
+#     passwordList = []
+#     all_char= string.ascii_letters + string.punctuation + string.digits
+#     for x in range(random.randint(minLength, maxLength)):
+#         passwordList.append(str(random.choice(all_char)))
+#         x+=0    # le non usage de la variable 'x' renvois un warning dans l'IDE
+#     password = password.join(passwordList)
+#     print(password)
 
-    # on vide passwd_input
-    passwd_input.delete(0, 'end')
-    # puis on l'alimente avec le contenu de la variable password
-    passwd_input.insert(0, password)
+#     # on vide passwd_input
+#     passwd_input.delete(0, 'end')
+#     # puis on l'alimente avec le contenu de la variable password
+#     passwd_input.insert(0, password)
 
 
 
@@ -50,14 +50,6 @@ window.config(background='#4065a4')
 
 # creation de la frame
 frame = tk.Frame(window, bg='#4065a4')
-
-# creation image
-large = 300
-haut = 300
-img = tk.PhotoImage(file="img/vault.png").zoom(35).subsample(32)
-caneva = tk.Canvas(frame, width=large, height=haut, bg='#4065a4', bd=0, highlightthickness=0)
-caneva.create_image(large/2, haut/2, image=img)
-caneva.grid(row=0, column=0, sticky="w")
 
 # sub box right side of screen
 boiteADroite = tk.Frame(frame, bg='#4065a4')
