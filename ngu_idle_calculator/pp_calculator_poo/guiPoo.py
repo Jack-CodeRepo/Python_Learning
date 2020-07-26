@@ -1,6 +1,18 @@
+# -*- coding: utf-8 -*-
+# ==================================================================================================
+
+
+# ==================================================================================================
+#   IMPORT
+# ==================================================================================================
+
 import tkinter as tk
 from math import ceil
 from datetime import timedelta
+
+# ==================================================================================================
+#   FONCTIONS
+# ==================================================================================================
 
 def test_int(value):
     test = -1
@@ -21,9 +33,9 @@ def test_float(value):
         return test
     return float(value)
 
-
-
-
+# ==================================================================================================
+#   CLASSES
+# ==================================================================================================
 
 class pp_calculator:
     def __init__(self, parent, x, y):
@@ -48,18 +60,7 @@ class pp_calculator:
         self.io02 = ""
         self.io03 = ""
 
-        self.i01_entry(0,0)
-
-
-        # self.i01 = tk.Entry(self.contenant, width=10)
-        # self.i01.grid(row=0, column=0)
-
-        # self.i02 = tk.Entry(self.contenant, width=10)
-        # self.i02.grid(row=1, column=0)
-
-        # self.i03 = tk.Entry(self.contenant, width=10)
-        # self.i03.grid(row=2, column=0)
-
+        self.entry(0,0)
         self.entry_output_cell(3,0)
 
         self.button_calculer_click("calculer", 0, 2)
@@ -114,7 +115,7 @@ class pp_calculator:
     def entry_output_cell(self, x, y):
         self.o = tk.Text(
             self.contenant, font=10, state=tk.DISABLED,
-            height=10, width=50)
+            height=3, width=50)
         self.o.grid(row=x, column=y, columnspan=3)
 
 
@@ -124,7 +125,7 @@ class pp_calculator:
         self.o.insert('1.0', text_)
         self.o.config(state=tk.DISABLED)
 
-    def i01_entry(self, x, y):
+    def entry(self, x, y):
         self.i01 = tk.Entry(self.contenant, width=10)
         self.i01.grid(row=x, column=y+1)
         self.i01_label = tk.Label(self.contenant, text="point")
@@ -150,8 +151,13 @@ class Appli:
 
         calc = pp_calculator(self.master, 0, 0)
 
+# ==================================================================================================
+#   SCRIPT
+# ==================================================================================================
 
 root = tk.Tk()
 root.title("Perk Points Calculator")
+root.iconbitmap("pp_calculator_poo/logo.ico")
 application = Appli(root)
+
 root.mainloop()
