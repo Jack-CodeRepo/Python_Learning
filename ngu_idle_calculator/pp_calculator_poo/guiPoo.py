@@ -111,6 +111,7 @@ class pp_calculator:
     def calculer(self):
         # on récupere les inputs et les attribue dans des variables
         # chaque variables est testée puis typée
+        self.point = self.i01.get()
         self.point = test_int(self.point)
         self.goal = self.i02.get()
         self.goal = test_int(self.goal)
