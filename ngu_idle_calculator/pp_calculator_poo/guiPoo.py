@@ -172,7 +172,7 @@ class Appli:
     def __init__(self, master):
         self.master = master
 
-        calc = pp_calculator(self.master, 0, 0)
+        pp_calculator(self.master, 0, 0)
 
 # ==================================================================================================
 #   SCRIPT
