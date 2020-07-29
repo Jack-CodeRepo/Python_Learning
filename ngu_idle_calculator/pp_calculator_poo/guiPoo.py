@@ -14,24 +14,6 @@ from datetime import timedelta
 #   FONCTIONS
 # ==================================================================================================
 
-def test_int(value):
-    test = -1
-    try:
-        int(value)
-    except ValueError:
-        print("please input integer number (no float).")
-        return test
-    return int(value)
-
-
-def test_float(value):
-    test = -1
-    try:
-        float(value)
-    except ValueError:
-        print("please input float number.")
-        return test
-    return float(value)
 
 
 
@@ -58,14 +40,14 @@ class interface(tk.Frame):
 
 
     def calculer(self):
-        p = test_int(self.saisie_point.get_value())
-        g = test_int(self.saisie_goal.get_value())
-        r = test_float(self.saisie_respawn.get_value())
+        p = self.saisie_point.test_int(self.saisie_point.get_value())
+        g = self.saisie_goal.test_int(self.saisie_goal.get_value())
+        r = self.saisie_respawn.test_float(self.saisie_respawn.get_value())
         t = r + 0.8
 
         progress = 1000000/p
         time_one_pp = progress*t
-        time_one_pp = ceil(test_int(time_one_pp))
+        time_one_pp = ceil(time_one_pp)
         time_goal = g*time_one_pp
         # génération de valeur temporelles, attribution en variable
         self.time_one_pp = timedelta(seconds=time_one_pp)
@@ -106,6 +88,23 @@ class saisie(tk.Entry):
 
     def get_value(self):
         return self.s.get()
+
+
+    def test_int(self,value):
+        try:
+            int(value)
+        except ValueError:
+            self.s.delete(0, tk.END)
+        return int(value)
+
+
+    def test_float(self, value):
+        try:
+            float(value)
+        except ValueError:
+            self.s.delete(0, tk.END)
+        return float(value)
+
 
 
 
