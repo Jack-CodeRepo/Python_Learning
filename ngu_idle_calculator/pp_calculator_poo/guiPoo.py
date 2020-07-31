@@ -25,36 +25,48 @@ class interface(tk.Frame):
     def __init__(self, parent):
         tk.Frame.__init__(self)
         self.parent = parent
-        self.time_one_pp = ""
+        self.time_01_pp = ""
         self.time_goal = ""
         self.output = ""
 
-        self.calculer_bouton = bouton(parent, 0, 2 , "calculer", self.calculer)
-        self.clear_bouton = bouton(parent, 1, 2, "Clear", self.clear)
+        self.calculer_temps_bouton = bouton(parent, 0, 2 , "Calculer le temps", self.calculer_temps)
+        self.clear_bouton = bouton(parent, 2, 2, "Clear", self.clear)
+        self.calculer_PP_bouton = bouton(parent, 1, 2, "Calculer les PP", self.calculer_PP)
 
         self.saisie_point = saisie(parent, 0, 0, "point")
         self.saisie_goal = saisie(parent, 1, 0, "goal")
-        self.saisie_respawn = saisie(parent, 2, 0,"Respawn rate")
-    
-        self.output = texte(parent, 3, 0, 50, 3).get_text()
+        self.saisie_respawn = saisie(parent, 2, 0,"Respawn rate (seconds)")
+        self.saisie_goal_time = saisie(parent, 3, 0, "time aimed (hour)")
+        self.output = texte(parent, 4, 0, 50, 3).get_text()
 
 
-    def calculer(self):
-        p = self.saisie_point.test_int(self.saisie_point.get_value())
+
+    def calculer_PP(self):
+        # calcul du temps pour 1 PP
+        time_01_pp = self.time_one_pp()
+
+        t_aimed = self.saisie_goal_time.test_int(self.saisie_goal_time.get_value())
+        pp_per_min = 60/time_01_pp
+        pp_per_hour = 60*pp_per_min
+        self.pp_earned = ceil(pp_per_hour * t_aimed)
+
+
+        # a chaque calcul, deux lignes de message sont générées et affichées
+        self.string01 = f"{self.pp_earned} PP gagné en {t_aimed} heures."
+        self.display( self.string01)
+
+
+
+    def calculer_temps(self):
         g = self.saisie_goal.test_int(self.saisie_goal.get_value())
-        r = self.saisie_respawn.test_float(self.saisie_respawn.get_value())
-        t = r + 0.8
-
-        progress = 1000000/p
-        time_one_pp = progress*t
-        time_one_pp = ceil(time_one_pp)
-        time_goal = g*time_one_pp
+        time_01_pp = ceil(self.time_one_pp())
+        time_goal = g*time_01_pp
         # génération de valeur temporelles, attribution en variable
-        self.time_one_pp = timedelta(seconds=time_one_pp)
+        self.time_01_pp = timedelta(seconds=time_01_pp)
         self.time_goal = timedelta(seconds=time_goal)
 
         # a chaque calcul, deux lignes de message sont générées et affichées
-        self.string01 = f"Temps passé pour avoir 1 PP: {self.time_one_pp} hh:mm:ss"
+        self.string01 = f"Temps passé pour avoir 1 PP: {self.time_01_pp} hh:mm:ss"
         self.string02 = f"Temps passé pour avoir {g} PP: {self.time_goal} hh:mm:ss"
         self.display( self.string01 + '\n' + self.string02 )
 
@@ -64,6 +76,19 @@ class interface(tk.Frame):
         self.output.delete('1.0', tk.END)
         self.output.insert('1.0', text)
         self.output.config(state=tk.DISABLED)
+
+
+    def time_one_pp(self):
+        p = self.saisie_point.test_int(self.saisie_point.get_value())
+        r = self.saisie_respawn.test_float(self.saisie_respawn.get_value())
+        t = r + 0.8
+
+        progress = 1000000/p
+        time_one_pp = progress*t
+        time_one_pp = ceil(time_one_pp)
+
+        return time_one_pp
+
 
 
     def clear(self):
@@ -83,7 +108,7 @@ class saisie(tk.Entry):
         self.s = tk.Entry(parent, width=10)
         self.s.grid(row=self.xRow, column=self.yCol+1)
         self.s_label = tk.Label(parent, text=self.label)
-        self.s_label.grid(row=self.xRow, column=self.yCol)
+        self.s_label.grid(row=self.xRow, column=self.yCol, sticky="w")
 
 
     def get_value(self):
@@ -132,10 +157,10 @@ class texte(tk.Text):
 class bouton(tk.Button):
     def __init__(self, parent, xRow, yCol, titre, cmd):
         tk.Button.__init__(self)
-        self.bouton = tk.Button(parent, text=titre, height=1, width=7, command=cmd)
+        self.bouton = tk.Button(parent, text=titre, height=1, width=15, command=cmd)
         self.xRow = xRow
         self.yCol = yCol
-        self.bouton.grid(row=self.xRow, column=self.yCol)
+        self.bouton.grid(row=self.xRow, column=self.yCol, sticky ="w")
 
 
 
