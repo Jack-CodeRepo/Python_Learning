@@ -13,8 +13,17 @@ from math import ceil
 
 
 # ===================================================================================================
+#   Declarations des variables
+# ===================================================================================================
+
+money = 0
+
+
+
+# ===================================================================================================
 #   Declarations des fonctions
 # ===================================================================================================
+
 
 
 def Pick_Money():
@@ -77,6 +86,7 @@ def montantMiser(money):
 
 
 def casino(money):
+    money = money
     time.sleep(3)
     print("Vous voilà au casino.")
     time.sleep(3)
@@ -92,10 +102,12 @@ def casino(money):
         print("Vous misez ", mise," Brouzoufes sur le chiffre ", chiffreMise)
 
         if caseBille == chiffreMise:
-            money = mise + mise * 3
+            gagne = mise + mise * 3
+            money += gagne
             print("Vous gagnez votre mise ainsi que ", mise*3," Brouzoufes.")
         elif caseBille % 2 == chiffreMise % 2:
-            money = mise + ceil(mise * 0.5)
+            gagne =mise + ceil(mise * 0.5)
+            money += gagne
             print("Vous gagnez votre mise ainsi que ", ceil(mise*0.5)," Brouzoufes.")
         else:
             print("Vous perdez votre mise (", mise," Brouzoufes).")
