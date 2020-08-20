@@ -8,7 +8,7 @@
 
 import tkinter as tk
 from datetime import timedelta
-
+from math import ceil
 
 # ==================================================================================================
 #   FONCTIONS
@@ -25,7 +25,7 @@ class interface(tk.Frame):
     def __init__(self, parent):
         tk.Frame.__init__(self)
         self.parent = parent
-        self.time_01_pp = ""
+        self.time_un_pp = ""
         self.time_goal = ""
         self.output = ""
 
@@ -47,7 +47,8 @@ class interface(tk.Frame):
         t_aimed = self.saisie_goal_time.test_int(self.saisie_goal_time.get_value())
         pp_per_min = 60/time_01_pp
         pp_per_hour = 60*pp_per_min
-        self.pp_earned = round(pp_per_hour * t_aimed)
+        result = ceil(pp_per_hour*t_aimed)
+        self.pp_earned = result
 
 
         # a chaque calcul, deux lignes de message sont générées et affichées
@@ -58,14 +59,15 @@ class interface(tk.Frame):
 
     def calculer_temps(self):
         g = self.saisie_goal.test_int(self.saisie_goal.get_value())
-        time_01_pp = round(self.time_one_pp())
-        time_goal = round(g*time_01_pp)
+        t = self.time_one_pp()
+        time_01_pp = round (t)
+        time_goal = round(g * t)
         # génération de valeur temporelles, attribution en variable
-        self.time_01_pp = timedelta(seconds=time_01_pp)
+        self.time_un_pp = timedelta(seconds=time_01_pp)
         self.time_goal = timedelta(seconds=time_goal)
 
         # a chaque calcul, deux lignes de message sont générées et affichées
-        self.string01 = f"Temps passé pour avoir 1 PP: {self.time_01_pp} hh:mm:ss"
+        self.string01 = f"Temps passé pour avoir 1 PP: {self.time_un_pp} hh:mm:ss"
         self.string02 = f"Temps passé pour avoir {g} PP: {self.time_goal} hh:mm:ss"
         self.display( self.string01 + '\n' + self.string02 )
 
@@ -82,7 +84,7 @@ class interface(tk.Frame):
         r = self.saisie_respawn.test_float(self.saisie_respawn.get_value())
         t = r + 0.8
 
-        progress = 1000000/p
+        progress = round(1000000/p)
         time_one_pp = progress*t
 
         return time_one_pp
