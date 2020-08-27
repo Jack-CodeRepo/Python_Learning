@@ -52,8 +52,8 @@ class interface(tk.Frame):
 
 
         # a chaque calcul, deux lignes de message sont générées et affichées
-        self.string01 = f"{self.pp_earned} PP gagné en {t_aimed} heures."
-        self.display( self.string01)
+        string01 = f"{self.pp_earned} PP gagné en {t_aimed} heures."
+        self.display( string01)
 
 
 
@@ -67,9 +67,9 @@ class interface(tk.Frame):
         self.time_goal = timedelta(seconds=time_goal)
 
         # a chaque calcul, deux lignes de message sont générées et affichées
-        self.string01 = f"Temps passé pour avoir 1 PP: {self.time_un_pp} hh:mm:ss"
-        self.string02 = f"Temps passé pour avoir {g} PP: {self.time_goal} hh:mm:ss"
-        self.display( self.string01 + '\n' + self.string02 )
+        string01 = f"Temps passé pour avoir 1 PP: {self.time_un_pp} hh:mm:ss"
+        string02 = f"Temps passé pour avoir {g} PP: {self.time_goal} hh:mm:ss"
+        self.display( string01 + '\n' + string02 )
 
 
     def display(self, text):
