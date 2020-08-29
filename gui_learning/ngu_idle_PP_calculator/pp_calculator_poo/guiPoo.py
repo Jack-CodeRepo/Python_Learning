@@ -16,7 +16,6 @@ from math import ceil
 
 
 
-
 # ==================================================================================================
 #   CLASSES
 # ==================================================================================================
@@ -24,7 +23,6 @@ from math import ceil
 class interface(tk.Frame):
     def __init__(self, parent):
         tk.Frame.__init__(self)
-        self.parent = parent
         self.time_un_pp = ""
         self.time_goal = ""
         self.output = ""
@@ -51,6 +49,7 @@ class interface(tk.Frame):
         self.pp_earned = result
 
 
+
         # a chaque calcul, deux lignes de message sont générées et affichées
         string01 = f"{self.pp_earned} PP gagné en {t_aimed} heures."
         self.display( string01)
@@ -60,8 +59,8 @@ class interface(tk.Frame):
     def calculer_temps(self):
         g = self.saisie_goal.test_int(self.saisie_goal.get_value())
         t = self.time_one_pp()
-        time_01_pp = round (t)
-        time_goal = round(g * t)
+        time_01_pp = ceil(t)
+        time_goal = ceil(g * t)
         # génération de valeur temporelles, attribution en variable
         self.time_un_pp = timedelta(seconds=time_01_pp)
         self.time_goal = timedelta(seconds=time_goal)
@@ -72,22 +71,24 @@ class interface(tk.Frame):
         self.display( string01 + '\n' + string02 )
 
 
-    def display(self, text):
-        self.output.config(state=tk.NORMAL, font="Calibri")
-        self.output.delete('1.0', tk.END)
-        self.output.insert('1.0', text)
-        self.output.config(state=tk.DISABLED)
-
 
     def time_one_pp(self):
         p = self.saisie_point.test_int(self.saisie_point.get_value())
         r = self.saisie_respawn.test_float(self.saisie_respawn.get_value())
         t = r + 0.8
 
-        progress = round(1000000/p)
+        progress = 1000000/p
         time_one_pp = progress*t
 
         return time_one_pp
+
+
+
+    def display(self, text):
+        self.output.config(state=tk.NORMAL, font="Calibri")
+        self.output.delete('1.0', tk.END)
+        self.output.insert('1.0', text)
+        self.output.config(state=tk.DISABLED)
 
 
 
@@ -99,43 +100,70 @@ class interface(tk.Frame):
 
 
 class saisie(tk.Entry):
+    '''
+        type: class
+        Gere les zone de saisie
+
+        Arguments:
+        xRow: coordonnée x (horizontal) de la zone de saisie
+        yCol: coordonnée y (vertical) de la zone de saisie
+        label: nom de la zone saisie, positionne à gauche de la zone
+    '''
     def __init__(self, parent, xRow, yCol, label=None):
         tk.Entry.__init__(self)
         self.xRow = xRow
         self.yCol = yCol
         self.label = label
 
-        self.s = tk.Entry(parent, width=10)
-        self.s.grid(row=self.xRow, column=self.yCol+1)
-        self.s_label = tk.Label(parent, text=self.label)
-        self.s_label.grid(row=self.xRow, column=self.yCol, sticky="w")
+        # création zone de saisie (entry)
+        self.saisie = tk.Entry(parent, width=10)
+        self.saisie.grid(row=self.xRow, column=self.yCol+1)
+        # création du nom de la zone de saisie (label)
+        self.saisie_label = tk.Label(parent, text=self.label)
+        self.saisie_label.grid(row=self.xRow, column=self.yCol, sticky="w")
+
 
 
     def get_value(self):
-        return self.s.get()
+        '''
+            Méthode qui récupere la valeur rentrée
+        '''
+        return self.saisie.get()
+
 
 
     def test_int(self,value):
         try:
             int(value)
         except ValueError:
-            self.s.delete(0, tk.END)
+            self.saisie.delete(0, tk.END)
         return int(value)
+
 
 
     def test_float(self, value):
         try:
             float(value)
         except ValueError:
-            self.s.delete(0, tk.END)
+            self.saisie.delete(0, tk.END)
         return float(value)
 
 
 
 
 
-
 class texte(tk.Text):
+    '''
+        type: class
+        Gere la zone d'affichage
+
+        Arguments:
+        xRow: coordonnée x (horizontal) de la zone d'affichage
+        yCol: coordonnée y (vertical) de la zone d'affichage
+        w: largeur de la zone d'affichage
+        h: hauteur de la zone d'affichage
+
+    '''
     def __init__(self, parent, xRow, yCol, w, h):
         tk.Text.__init__(self)
         self.xRow = xRow
@@ -147,6 +175,7 @@ class texte(tk.Text):
         self.boite_texte.grid(row=self.xRow, column=self.yCol, columnspan=3)
 
 
+
     def get_text(self):
         return self.boite_texte
 
@@ -155,11 +184,23 @@ class texte(tk.Text):
 
 
 class bouton(tk.Button):
+    '''
+        type: class
+        Gere la zone d'affichage
+
+        Arguments:
+        xRow: coordonnée x (horizontal) de la zone d'affichage
+        yCol: coordonnée y (vertical) de la zone d'affichage
+        titre: nom du bouton
+        cmd: fonction à associer au bouton
+
+    '''
     def __init__(self, parent, xRow, yCol, titre, cmd):
         tk.Button.__init__(self)
-        self.bouton = tk.Button(parent, text=titre, height=1, width=15, command=cmd)
         self.xRow = xRow
         self.yCol = yCol
+
+        self.bouton = tk.Button(parent, text=titre, height=1, width=15, command=cmd)
         self.bouton.grid(row=self.xRow, column=self.yCol, sticky ="w")
 
 
@@ -167,6 +208,14 @@ class bouton(tk.Button):
 
 
 class menu_bar(tk.Menu):
+    '''
+        type: class
+        Gere la barre de menu
+
+        Arguments:
+        parent: fenetre parente (main window)
+
+    '''
     def __init__(self, parent):
         tk.Menu.__init__(self)
 
@@ -187,6 +236,7 @@ class menu_bar(tk.Menu):
         self.add_cascade(label="Help", menu=menu_Help)
 
 
+
     def quitter(self):
         exit()
 
@@ -198,12 +248,18 @@ class menu_bar(tk.Menu):
 #   SCRIPT
 # ==================================================================================================
 
+# définition de la fenetre principale 'root'
 root = tk.Tk()
 
+# configuration de la fenetre principale
+# association du menu de la fenetre principale 'root' par appel de la class 'menu_bar'
 root.config(menu=menu_bar(root))
+# définition du titre de la fenetre principale 'root'
 root.title("Perk Points Calculator")
+# définition du logo de la fenetre principale 'root'
 root.iconbitmap("pp_calculator_poo/logo.ico")
-
+# association des éléments GUI à root par appel de la class 'interface'
 interface(root)
 
+# génération du GUI
 root.mainloop()
