@@ -1,0 +1,8 @@
+2020-09-16 09:11:52,195 :: Fonction= calculer_PP :: Resultat= 352 PP gagné en 1 heures.
+2020-09-16 09:11:54,306 :: Fonction= calculer_PP :: Resultat= 704 PP gagné en 2 heures.
+2020-09-16 09:14:39,489 :: Fonction= calculer_temps :: message_01= Temps passé pour avoir 1 PP: 0:00:10 hh:mm:ss :: message_01= Temps passé pour avoir 250 PP: 0:41:21 hh:mm:ss
+2020-09-16 09:14:43,446 :: Fonction= calculer_temps :: message_01= Temps passé pour avoir 1 PP: 0:00:10 hh:mm:ss :: message_01= Temps passé pour avoir 500 PP: 1:22:41 hh:mm:ss
+2020-09-16 09:14:45,466 :: Fonction= calculer_PP :: message_01= 363 PP gagné en 1 heures.
+2020-09-16 09:14:47,502 :: Fonction= calculer_PP :: message_01= 726 PP gagné en 2 heures.
+2020-09-16 09:15:02,850 :: Fonction= calculer_PP :: message_01= 1608 PP gagné en 5 heures.
+2020-09-16 09:15:03,732 :: Fonction= calculer_temps :: message_01= Temps passé pour avoir 1 PP: 0:00:12 hh:mm:ss :: message_01= Temps passé pour avoir 1000 PP: 3:06:40 hh:mm:ss
