@@ -15,7 +15,7 @@ from logging.handlers import RotatingFileHandler
 #   FONCTIONS
 # ==================================================================================================
 
-logging.basicConfig(filename="ngu.log",
+logging.basicConfig(filename="log/ngu_display_messages.log",
                     format='%(asctime)s :: %(message)s',
                     filemode='a')
 

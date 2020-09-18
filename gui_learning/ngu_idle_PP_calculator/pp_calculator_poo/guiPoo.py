@@ -73,8 +73,8 @@ class interface(tk.Frame):
         string01 = f"Temps passé pour avoir 1 PP: {self.time_un_pp} hh:mm:ss"
         string02 = f"Temps passé pour avoir {g} PP: {self.time_goal} hh:mm:ss"
         self.display( string01 + '\n' + string02 )
-        logger.info(f"Fonction= calculer_temps :: message_01= {string01} :: message_01= {string02}")
-
+        logger.info(f"Fonction= calculer_temps :: message_01= {string01}")
+        logger.info(f"Fonction= calculer_temps :: message_02= {string02}")
 
     def time_one_pp(self):
         p = self.saisie_point.test_int(self.saisie_point.get_value())
