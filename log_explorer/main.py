@@ -5,99 +5,122 @@
 # ==================================================================================================
 #   IMPORT
 # ==================================================================================================
-
 import tkinter as tk
-from datetime import timedelta
-from math import ceil
+from tkinter import filedialog
+import configparser
 
-# import pour gnération log
-from loging_func import logger
+
+
+# ==================================================================================================
+#   VARIABLES GLOBALES
+# ==================================================================================================
+
+chemin_exploreur_defaut = None
+chemin_complet_fichier = None
+
+
+# ==================================================================================================
+#   DICT
+# ==================================================================================================
+
+
+# ==================================================================================================
+#   LISTS
+# ==================================================================================================
+
 
 # ==================================================================================================
 #   FONCTIONS
 # ==================================================================================================
 
+def init_config():
+    config = configparser.ConfigParser()
+    config.read("configuration.conf")
+    folder = config.get("EXPLORER", "default_path")
+    fichier = config.get("EXPLORER", "last_log_open")
 
+    return folder, fichier
+
+
+def open_file(defaut_folder=None, default_file=None):
+    if not defaut_folder:
+        defaut_folder = chemin_exploreur_defaut
+
+    if not default_file:
+        default_file = chemin_complet_fichier
+        if not chemin_complet_fichier:
+            path_to_file = tk.filedialog.askopenfilename(initialdir=defaut_folder,
+                                                filetypes=[("fichier log", "*.log"),
+                                                            ("tout les fichiers", "*.*")
+                                                ]
+                                                )
+        modify_conf("EXPLORER", "last_log_open", path_to_file)
+
+    return path_to_file
+
+def modify_conf(section, option, value):
+    config = configparser.ConfigParser()
+    config.read("configuration.conf")
+    config.set(section, option, value)
+
+    with open("configuration.conf", 'w') as configfile:
+        config.write(configfile)
+
+
+
+def default_explorer_path():
+    chemin_exploreur_defaut = tk.filedialog.askdirectory()
+    modify_conf("EXPLORER", "default_path",chemin_exploreur_defaut)
+
+
+
+def quitter():
+    exit()
 
 # ==================================================================================================
 #   CLASSES
 # ==================================================================================================
-
-class interface(tk.Frame):
+class interface_main(tk.Frame):
     def __init__(self, parent):
         tk.Frame.__init__(self)
-        self.time_un_pp = ""
-        self.time_goal = ""
-        self.output = ""
-
-        self.calculer_temps_bouton = bouton(parent, 0, 2 , "Calculer le temps", self.calculer_temps)
-        self.clear_bouton = bouton(parent, 2, 2, "Clear", self.clear)
-        self.calculer_PP_bouton = bouton(parent, 1, 2, "Calculer les PP", self.calculer_PP)
-
-        self.saisie_point = saisie(parent, 0, 0, "point")
-        self.saisie_respawn = saisie(parent, 1, 0,"Respawn rate (seconds)")
-        self.saisie_goal = saisie(parent, 2, 0, "goal")
-        self.saisie_goal_time = saisie(parent, 3, 0, "time aimed (hour)")
-        self.output = texte(parent, 4, 0, 50, 3).get_text()
+        self.string_searched = saisie(parent, 0, 0, "recherche:")
+        self.output = output_display(parent, 3, 0, 125, 20).get_text()
+        self.rechercher_bouton = bouton(parent, 0, 2, "rechercher", self.search_log)
 
 
+    def search_log(self):
+        fichier = chemin_complet_fichier
 
-    def calculer_PP(self):
-        # calcul du temps pour 1 PP
-        time_01_pp = self.time_one_pp()
-        t_aimed = self.saisie_goal_time.test_int(self.saisie_goal_time.get_value())
-        pp_per_min = 60/time_01_pp
-        pp_per_hour = 60*pp_per_min
-        result = ceil(pp_per_hour*t_aimed)
-        self.pp_earned = result
+        if not chemin_complet_fichier:
+            fichier = open_file()
 
-        # a chaque calcul, deux lignes de message sont générées et affichées
-        string01 = f"{self.pp_earned} PP gagné en {t_aimed} heures."
-        self.display( string01)
+        with open(fichier) as fichier:
+            lignes_log = fichier.readlines()
+            lignes_trouvees = []
+            string_cherchee = self.string_searched.get_value()
+            for l in lignes_log:
+                if string_cherchee in l:
+                    lignes_trouvees.append(l)
 
-        logger.info(f"Fonction= calculer_PP :: message_01= {string01}")
-
-
-
-
-    def calculer_temps(self):
-        g = self.saisie_goal.test_int(self.saisie_goal.get_value())
-        t = self.time_one_pp()
-        time_01_pp = ceil(t)
-        time_goal = ceil(g * t)
-        # génération de valeur temporelles, attribution en variable
-        self.time_un_pp = timedelta(seconds=time_01_pp)
-        self.time_goal = timedelta(seconds=time_goal)
-
-        # a chaque calcul, deux lignes de message sont générées et affichées
-        string01 = f"Temps passé pour avoir 1 PP: {self.time_un_pp} hh:mm:ss"
-        string02 = f"Temps passé pour avoir {g} PP: {self.time_goal} hh:mm:ss"
-        self.display( string01 + '\n' + string02 )
-        logger.info(f"Fonction= calculer_temps :: message_01= {string01}")
-        logger.info(f"Fonction= calculer_temps :: message_02= {string02}")
-
-    def time_one_pp(self):
-        p = self.saisie_point.test_int(self.saisie_point.get_value())
-        r = self.saisie_respawn.test_float(self.saisie_respawn.get_value())
-        t = r + 0.8
-
-        progress = 1000000/p
-        time_one_pp = progress*t
-
-        return time_one_pp
+            if not lignes_trouvees:
+                self.display("Pas de correspondance")
+            elif lignes_trouvees:
+                self.display(lignes_trouvees)
 
 
-
-    def display(self, text):
+    def display(self, liste):
         self.output.config(state=tk.NORMAL, font="Calibri")
         self.output.delete('1.0', tk.END)
-        self.output.insert('1.0', text)
+        for l in liste:
+            self.output.insert('1.0', l)
         self.output.config(state=tk.DISABLED)
-
 
 
     def clear(self):
         self.display('')
+
+
+
 
 
 
@@ -121,11 +144,15 @@ class saisie(tk.Entry):
 
         # création zone de saisie (entry)
         self.saisie = tk.Entry(parent, width=10)
-        self.saisie.grid(row=self.xRow, column=self.yCol+1)
+        self.saisie.grid(row=self.xRow, 
+                            column=self.yCol+1
+                            )
         # création du nom de la zone de saisie (label)
         self.saisie_label = tk.Label(parent, text=self.label)
-        self.saisie_label.grid(row=self.xRow, column=self.yCol, sticky="w")
-
+        self.saisie_label.grid(row=self.xRow, 
+                                column=self.yCol, 
+                                sticky="w"
+                                )
 
 
     def get_value(self):
@@ -135,28 +162,18 @@ class saisie(tk.Entry):
         return self.saisie.get()
 
 
-
-    def test_int(self,value):
+    def test_string(self,value):
         try:
-            int(value)
+            str(value)
         except ValueError:
             self.saisie.delete(0, tk.END)
         return int(value)
 
 
 
-    def test_float(self, value):
-        try:
-            float(value)
-        except ValueError:
-            self.saisie.delete(0, tk.END)
-        return float(value)
 
 
-
-
-
-class texte(tk.Text):
+class output_display(tk.Text):
     '''
         type: class
         Gere la zone d'affichage
@@ -179,11 +196,8 @@ class texte(tk.Text):
         self.boite_texte.grid(row=self.xRow, column=self.yCol, columnspan=3)
 
 
-
     def get_text(self):
         return self.boite_texte
-
-
 
 
 
@@ -211,6 +225,7 @@ class bouton(tk.Button):
 
 
 
+
 class menu_bar(tk.Menu):
     '''
         type: class
@@ -225,12 +240,13 @@ class menu_bar(tk.Menu):
 
         menu_Fichier = tk.Menu(self, tearoff=0)
         menu_Fichier.add_command(label="Nouveau")
-        menu_Fichier.add_command(label="Ouvrir")
+        menu_Fichier.add_command(label="Ouvrir", command=open_file)
+        menu_Fichier.add_command(label="Modifier chemin par defaut", command=default_explorer_path)
         menu_Fichier.add_command(label="Enregistrer")
         menu_Fichier.add_command(label="Enregistrer Sous")
         menu_Fichier.add_command(label="Imprimer")
         menu_Fichier.add_separator()
-        menu_Fichier.add_command(label="Quitter", command=self.quitter)
+        menu_Fichier.add_command(label="Quitter", command=quitter)
 
         menu_Help = tk.Menu(self, tearoff=0)
         menu_Help.add_command(label="Documentation")
@@ -241,9 +257,6 @@ class menu_bar(tk.Menu):
 
 
 
-    def quitter(self):
-        exit()
-
 
 
 
@@ -252,18 +265,14 @@ class menu_bar(tk.Menu):
 #   SCRIPT
 # ==================================================================================================
 
-# définition de la fenetre principale 'root'
+chemin_exploreur_defaut, chemin_complet_fichier = init_config()
+
+
 root = tk.Tk()
-
-# configuration de la fenetre principale
-# association du menu de la fenetre principale 'root' par appel de la class 'menu_bar'
+root.title("log_explorer")
 root.config(menu=menu_bar(root))
-# définition du titre de la fenetre principale 'root'
-root.title("Perk Points Calculator")
-# définition du logo de la fenetre principale 'root'
-root.iconbitmap("pp_calculator_poo/logo.ico")
-# association des éléments GUI à root par appel de la class 'interface'
-interface(root)
 
-# génération du GUI
+interface_main(root)
+
 root.mainloop()
+
