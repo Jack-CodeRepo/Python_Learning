@@ -1,3 +1,4 @@
+NOM
 log_explorer
 
 ce projet a pour but de chercher une string dans un fichier de log.
