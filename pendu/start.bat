@@ -2,4 +2,4 @@
 
 title log_explorer
 
-python main_log_explorer.py
+python pendu_main.py
