@@ -74,12 +74,12 @@ def open_save_file(defaut_folder=None, default_file=None):
     return default_file
 
 
-def add_player(player_name):
+def add_player(name):
     with open(save_file, 'a') as fichier:
-        fichier.write(f"\n{player_name}=10")
+        fichier.write(f"\n{name}=10")
 
 
-def select_player():
+def get_list_players():
     with open(save_file, 'r') as fichier:
         lignes = fichier.readlines()
         joueur = []
@@ -102,10 +102,12 @@ class interface_main(tk.Frame):
         tk.Frame.__init__(self)
         self.parent = parent
         self.add_player_input = None
-
+        self.player_name = None
+        self.player_listbox = None
+        self.display_player_selected = None
         self.output = display(parent, 3, 0, 125, 20).get_text()
         self.add_player_button = bouton(parent, 0, 0, "Nouveau joueur", self.window_add_player)
-        self.select_player = bouton(parent, 0, 1, "Choisir Joueur", self.cmd_select_player)
+        self.select_player = bouton(parent, 0, 1, "Choisir Joueur", self.window_select_player)
 
 
     def window_add_player(self):
@@ -121,19 +123,30 @@ class interface_main(tk.Frame):
         name = self.add_player_input.get_value()
         add_player(name)
 
-    def cmd_select_player(self):
+
+    def window_select_player(self):
         height = 200
         width = 300
 
-        default_player = select_player()
-        player_choose = tk.StringVar()
-        player_choose.set(default_player[0])
+        list_players = get_list_players()
 
         select_player_window = new_window(self.parent, "Choisir Joueur", width, height)
-        select_player_choose = tk.OptionMenu(select_player_window, player_choose, *default_player)
-        select_player_choose.grid(row=0, column=0)
+
+        self.player_listbox = tk.Listbox(select_player_window)
+        self.player_listbox.grid(row=0, column=0, sticky='nw')
+
+        for player in list_players:
+            self.player_listbox.insert(tk.END, player)
+
+        self.display_player_selected = display(select_player_window, 1, 1, 100, 30)
+
+        self.select_player_button = bouton(select_player_window, 0, 1, "Valider", self.cmd_select_player)
 
 
+    def cmd_select_player(self):
+        selected_player = self.player_listbox.get(self.player_listbox.curselection())
+        self.player_name = selected_player
+        self.affichage(self.display_player_selected,self.player_name)
 
     def affichage(self, objet, liste):
         '''
@@ -143,11 +156,17 @@ class interface_main(tk.Frame):
             liste: liste des éléments à afficher
 
         '''
-        objet.config(state=tk.NORMAL, font="Calibri")
-        objet.delete('1.0', tk.END)
-        for l in liste:
-            objet.insert('1.0', l)
-        objet.config(state=tk.DISABLED)
+        if type(liste) != list:
+            objet.config(state=tk.NORMAL, font="Calibri")
+            objet.delete('1.0', tk.END)
+            objet.insert('1.0', liste)
+            objet.config(state=tk.DISABLED)
+        else:
+            objet.config(state=tk.NORMAL, font="Calibri")
+            objet.delete('1.0', tk.END)
+            for l in liste:
+                objet.insert('1.0', l)
+            objet.config(state=tk.DISABLED)
 
 
 
