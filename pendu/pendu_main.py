@@ -10,6 +10,7 @@ import tkinter as tk
 from tkinter import filedialog
 
 import configparser
+import os
 
 # ==================================================================================================
 #   VARIABLES GLOBALES
@@ -34,6 +35,7 @@ player_name = None
 #   FONCTIONS
 # ==================================================================================================
 
+# fonctions liées au fichier pendu.conf
 def init_config():
     config = configparser.ConfigParser()
     config.read("pendu.conf")
@@ -52,6 +54,7 @@ def modify_conf(section, option, value):
         config.write(configfile)
 
 
+# fonctions liées au menu
 def create_save_file():
     default_file = tk.filedialog.askdirectory()
     modify_conf("FILES", "save_file", default_file+"/pendu/save.txt")
@@ -74,9 +77,15 @@ def open_save_file(defaut_folder=None, default_file=None):
     return default_file
 
 
+# fonctions liées à l'interface autre que le menu
 def add_player(name):
-    with open(save_file, 'a') as fichier:
-        fichier.write(f"\n{name}=10")
+    check_empty_file = os.stat(save_file).st_size == 0
+    if check_empty_file:
+        with open(save_file, 'a') as fichier:
+            fichier.write(f"{name}=10")
+    if not check_empty_file:
+        with open(save_file, 'a') as fichier:
+            fichier.write(f"\n{name}=10")
 
 
 def get_list_players():
@@ -87,6 +96,16 @@ def get_list_players():
             nom_joueur = l.split("=")
             joueur.append(nom_joueur[0])
     return joueur
+
+
+def get_score_player_name(name):
+    with open(save_file, 'r') as fichier:
+        lignes = fichier.readlines()
+        for l in lignes:
+            nom_joueur = l.split("=")[0]
+            score = l.split("=")[1]
+            if name == nom_joueur:
+                return nom_joueur, score
 
 
 def quitter():
@@ -100,53 +119,30 @@ def quitter():
 class interface_main(tk.Frame):
     def __init__(self, parent):
         tk.Frame.__init__(self)
-        self.parent = parent
         self.add_player_input = None
         self.player_name = None
-        self.player_listbox = None
-        self.display_player_selected = None
+        self.player_score = None
+
+        self.select_player_input = saisie(parent, 0, 0, "nom du joueur")
         self.output = display(parent, 3, 0, 125, 20).get_text()
-        self.add_player_button = bouton(parent, 0, 0, "Nouveau joueur", self.window_add_player)
-        self.select_player = bouton(parent, 0, 1, "Choisir Joueur", self.window_select_player)
+        self.select_player = bouton(parent, 0, 1, "Valider Joueur", self.manage_player)
 
 
-    def window_add_player(self):
-        height = 200
-        width = 300
-        add_player_window = new_window(self.parent, "Nouveau joueur", width, height)
-        self.add_player_input = saisie(add_player_window, 0, 0, "Nom")
+    def manage_player(self):
+        players_list = get_list_players()
+        player_name = self.select_player_input.get_value()
+        player_name = player_name.upper()
 
-        self.add_player_button = bouton(add_player_window, 0, 3, "Ajouter", self.cmd_add_player)
+        if player_name not in players_list:
+            add_player(player_name)
+            self.player_name = player_name
+            string = f"nom du joueur: {self.player_name} // score: 10"
+            self.affichage(self.output, string)
+        else:
+            self.player_name, self.player_score = get_score_player_name(player_name)
+            string = f"nom du joueur: {self.player_name} // score: {self.player_score}"
+            self.affichage(self.output, string)
 
-
-    def cmd_add_player(self):
-        name = self.add_player_input.get_value()
-        add_player(name)
-
-
-    def window_select_player(self):
-        height = 200
-        width = 300
-
-        list_players = get_list_players()
-
-        select_player_window = new_window(self.parent, "Choisir Joueur", width, height)
-
-        self.player_listbox = tk.Listbox(select_player_window)
-        self.player_listbox.grid(row=0, column=0, sticky='nw')
-
-        for player in list_players:
-            self.player_listbox.insert(tk.END, player)
-
-        self.display_player_selected = display(select_player_window, 1, 1, 100, 30)
-
-        self.select_player_button = bouton(select_player_window, 0, 1, "Valider", self.cmd_select_player)
-
-
-    def cmd_select_player(self):
-        selected_player = self.player_listbox.get(self.player_listbox.curselection())
-        self.player_name = selected_player
-        self.affichage(self.display_player_selected,self.player_name)
 
     def affichage(self, objet, liste):
         '''
@@ -167,21 +163,6 @@ class interface_main(tk.Frame):
             for l in liste:
                 objet.insert('1.0', l)
             objet.config(state=tk.DISABLED)
-
-
-
-
-
-
-class new_window(tk.Toplevel):
-    '''
-    '''
-    def __init__(self, parent, title, width=200, height=200):
-        tk.Toplevel.__init__(self)
-        self.title(title)
-        self.geometry(f"{width}x{height}")
-        self.geometry()
-
 
 
 
