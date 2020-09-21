@@ -80,6 +80,7 @@ def quitter():
 # ==================================================================================================
 #   CLASSES
 # ==================================================================================================
+
 class interface_main(tk.Frame):
     def __init__(self, parent):
         tk.Frame.__init__(self)
@@ -160,15 +161,6 @@ class saisie(tk.Entry):
             Méthode qui récupere la valeur rentrée
         '''
         return self.saisie.get()
-
-
-    def test_string(self,value):
-        try:
-            str(value)
-        except ValueError:
-            self.saisie.delete(0, tk.END)
-        return int(value)
-
 
 
 
