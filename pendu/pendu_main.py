@@ -18,7 +18,7 @@ import configparser
 lol = None
 save_file = None
 word_dict_file = None
-
+player_name = None
 
 # ==================================================================================================
 #   DICT
@@ -52,11 +52,9 @@ def modify_conf(section, option, value):
         config.write(configfile)
 
 
-
 def create_save_file():
     default_file = tk.filedialog.askdirectory()
     modify_conf("FILES", "save_file", default_file+"/pendu/save.txt")
-
 
 
 def open_save_file(defaut_folder=None, default_file=None):
@@ -75,11 +73,20 @@ def open_save_file(defaut_folder=None, default_file=None):
 
     return default_file
 
-def add_player(save_file, player_name):
+
+def add_player(player_name):
     with open(save_file, 'a') as fichier:
-        fichier.write(f"{player_name}=10")
+        fichier.write(f"\n{player_name}=10")
 
 
+def select_player():
+    with open(save_file, 'r') as fichier:
+        lignes = fichier.readlines()
+        joueur = []
+        for l in lignes:
+            nom_joueur = l.split("=")
+            joueur.append(nom_joueur[0])
+    return joueur
 
 
 def quitter():
@@ -94,24 +101,38 @@ class interface_main(tk.Frame):
     def __init__(self, parent):
         tk.Frame.__init__(self)
         self.parent = parent
+        self.add_player_input = None
+
         self.output = display(parent, 3, 0, 125, 20).get_text()
-        self.add_player_affichage = None
-        self.add_player = bouton(parent, 0, 0, "Ajouter un joueur", self.cmd_add_player)
+        self.add_player_button = bouton(parent, 0, 0, "Nouveau joueur", self.window_add_player)
+        self.select_player = bouton(parent, 0, 1, "Choisir Joueur", self.cmd_select_player)
+
+
+    def window_add_player(self):
+        height = 200
+        width = 300
+        add_player_window = new_window(self.parent, "Nouveau joueur", width, height)
+        self.add_player_input = saisie(add_player_window, 0, 0, "Nom")
+
+        self.add_player_button = bouton(add_player_window, 0, 3, "Ajouter", self.cmd_add_player)
 
 
     def cmd_add_player(self):
-        row = 200
-        width = 300
-        add_player_window = new_window(self.parent, "Nouveau joueur", row, width)
-        self.add_player_affichage = display(add_player_window, 1, 0, row, width).get_text()
+        name = self.add_player_input.get_value()
+        add_player(name)
 
-        with open(save_file, 'r') as fichier:
-            lignes = fichier.readlines()
-            joueur = []
-            for l in lignes:
-                nom_joueur = l.split("=")
-                joueur.append(nom_joueur[0])
-            self.affichage(self.add_player_affichage,joueur)
+    def cmd_select_player(self):
+        height = 200
+        width = 300
+
+        default_player = select_player()
+        player_choose = tk.StringVar()
+        player_choose.set(default_player[0])
+
+        select_player_window = new_window(self.parent, "Choisir Joueur", width, height)
+        select_player_choose = tk.OptionMenu(select_player_window, player_choose, *default_player)
+        select_player_choose.grid(row=0, column=0)
+
 
 
     def affichage(self, objet, liste):
@@ -131,14 +152,20 @@ class interface_main(tk.Frame):
 
 
 
+
+
 class new_window(tk.Toplevel):
     '''
     '''
-    def __init__(self, parent, title, row=200, width=200):
+    def __init__(self, parent, title, width=200, height=200):
         tk.Toplevel.__init__(self)
         self.title(title)
-        self.geometry(f"{width}x{row}")
+        self.geometry(f"{width}x{height}")
         self.geometry()
+
+
+
+
 
 
 class display(tk.Text):
@@ -169,6 +196,9 @@ class display(tk.Text):
 
 
 
+
+
+
 class bouton(tk.Button):
     '''
         type: class
@@ -188,6 +218,49 @@ class bouton(tk.Button):
 
         self.bouton = tk.Button(parent, text=titre, height=1, width=15, command=cmd)
         self.bouton.grid(row=self.xRow, column=self.yCol, sticky ="w")
+
+
+
+
+
+
+class saisie(tk.Entry):
+    '''
+        type: class
+        Gere les zone de saisie
+
+        Arguments:
+        xRow: coordonnée x (horizontal) de la zone de saisie
+        yCol: coordonnée y (vertical) de la zone de saisie
+        label: nom de la zone saisie, positionne à gauche de la zone
+    '''
+    def __init__(self, parent, xRow, yCol, label=None):
+        tk.Entry.__init__(self)
+        self.xRow = xRow
+        self.yCol = yCol
+        self.label = label
+
+        # création zone de saisie (entry)
+        self.saisie = tk.Entry(parent, width=10)
+        self.saisie.grid(row=self.xRow, 
+                            column=self.yCol+1
+                            )
+        # création du nom de la zone de saisie (label)
+        self.saisie_label = tk.Label(parent, text=self.label)
+        self.saisie_label.grid(row=self.xRow, 
+                                column=self.yCol, 
+                                sticky="w"
+                                )
+
+    def get_value(self):
+        '''
+            Méthode qui récupere la valeur rentrée
+        '''
+        return self.saisie.get()
+
+
+
+
 
 
 
