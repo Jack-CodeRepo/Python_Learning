@@ -146,17 +146,22 @@ class interface_main(tk.Frame):
         self.save_file = None
 
         self.label_player = tk.Label(parent)
-        self.main_display = display(parent, 0, 0, 20, 20, 4)
-        self.select_player_input = saisie(parent, 0, 2, "nom du joueur")
-        self.select_player = bouton(parent, 0, 1, "Valider Joueur", self.manage_player)
-        self.pendu_jouer = bouton(parent, 1, 1, "jouer", self.pendu_game)
+        self.main_display = display(parent, 0, 0, 20, 10, 20)
+        self.select_player_input = saisie(parent, 1, 2, "nom du joueur")
+        self.select_player = bouton(parent, 1, 1, "Valider Joueur", self.manage_player)
+        self.pendu_jouer = bouton(parent, 2, 1, "jouer", self.pendu_game)
 
 
     def check_save_file(self):
         self.save_file = get_config_element("FILES", "save_file")
+        
         if not self.save_file:
             create_save_file()
             self.save_file = get_config_element("FILES", "save_file")
+
+        if not os.path.exists(self.save_file):
+            create_save_file()
+
 
 
     def manage_player(self):
@@ -171,7 +176,7 @@ class interface_main(tk.Frame):
             self.player_name = player_name
             string = f"nom du joueur: {self.player_name} // score: 10"
             # self.affichage(self.output, string)
-            self.label_player.grid(row=0, column=4)
+            self.label_player.grid(row=0, column=1, sticky='nsew')
             self.label_player.config(text=string)
 
         if player_name not in players_list:
@@ -179,18 +184,18 @@ class interface_main(tk.Frame):
             self.player_name = player_name
             string = str(f"nom du joueur: {self.player_name} // score: 10")
             # self.affichage(self.output, string)
-            self.label_player.grid(row=0, column=4)
+            self.label_player.grid(row=0, column=1, sticky='nsew')
             self.label_player.config(text=string)
         else:
             self.player_name, self.player_score = get_score_player_name(player_name, self.save_file)
             string = str(f"nom du joueur: {self.player_name} // score: {self.player_score}")
             # self.affichage(self.output, string)
-            self.label_player.grid(row=0, column=4)
+            self.label_player.grid(row=0, column=1, sticky='nsew')
             self.label_player.config(text=string)
 
 
     def pendu_game(self):
-        self.check_save_file
+        self.check_save_file()
         if not self.player_name:
             player_name = "ANONYME"
             add_player(player_name, self.save_file)
@@ -200,7 +205,9 @@ class interface_main(tk.Frame):
             self.label_player.grid(row=0, column=4)
             self.label_player.config(text=string)
 
-            mot_pendu = words_list
+        mot_pendu = words_list
+
+        self.affichage(self.main_display, mot_pendu)
 
 
 
@@ -278,7 +285,7 @@ class bouton(tk.Button):
         self.yCol = yCol
 
         self.bouton = tk.Button(parent, text=titre, height=1, width=15, command=cmd)
-        self.bouton.grid(row=self.xRow, column=self.yCol, sticky ="w")
+        self.bouton.grid(row=self.xRow, column=self.yCol, sticky ="nsew")
 
 
 
@@ -350,9 +357,6 @@ class menu_bar(tk.Menu):
 
         self.add_cascade(label="Fichier", menu=menu_Fichier)
         self.add_cascade(label="Help", menu=menu_Help)
-
-
-
 
 
 
