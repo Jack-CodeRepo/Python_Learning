@@ -20,8 +20,9 @@ from words import words_list
 #   VARIABLES GLOBALES
 # ==================================================================================================
 
-player_name = None
-save_file = None
+save_file = "save_file.txt"
+conf_file = "pendu.conf"
+
 # ==================================================================================================
 #   DICT
 # ==================================================================================================
@@ -40,16 +41,16 @@ save_file = None
 
 def modify_conf(section, option, value):
     config = configparser.ConfigParser()
-    config.read("pendu.conf")
+    config.read(conf_file)
     config.set(section, option, value)
 
-    with open("pendu.conf", 'w') as configfile:
+    with open(conf_file, 'w') as configfile:
         config.write(configfile)
 
 
 def get_config_element(section, option):
     config = configparser.ConfigParser()
-    config.read("pendu.conf")
+    config.read(conf_file)
     value = config.get(section, option)
 
     return value
@@ -57,31 +58,31 @@ def get_config_element(section, option):
 
 
 # fonctions liées au menu
-def create_save_file():
-    path_save_file = tk.filedialog.askdirectory()
-    new_save_file = path_save_file+"/save_file.txt"
+# def create_save_file():
+#     path_save_file = tk.filedialog.askdirectory()
+#     new_save_file = path_save_file+"/save_file.txt"
 
-    f = open(new_save_file, "w")
-    f.close()
-    modify_conf("FILES", "save_file", new_save_file)
+#     f = open(new_save_file, "w")
+#     f.close()
+#     modify_conf("FILES", "save_file", new_save_file)
 
 
-def open_save_file(defaut_folder=None, default_file=None):
-    if not defaut_folder:
-        defaut_folder = "C:/"
+# def open_save_file(defaut_folder=None, default_file=None):
+#     if not defaut_folder:
+#         defaut_folder = "C:/"
 
-    if not default_file:
-        get_save_file = get_config_element("FILES", "save_file")
-        if not get_save_file:
-            selected_file = tk.filedialog.askopenfilename(initialdir=defaut_folder,
-                                                filetypes=[("fichier texte", "*.txt"),
-                                                            ("tout les fichiers", "*.*")
-                                                ]
-                                                )
+#     if not default_file:
+#         get_save_file = get_config_element("FILES", "save_file")
+#         if not get_save_file:
+#             selected_file = tk.filedialog.askopenfilename(initialdir=defaut_folder,
+#                                                 filetypes=[("fichier texte", "*.txt"),
+#                                                             ("tout les fichiers", "*.*")
+#                                                 ]
+#                                                 )
 
-        modify_conf("FILES", "save_file", selected_file)
+#         modify_conf("FILES", "save_file", selected_file)
 
-    return default_file
+#     return default_file
 
 
 def quitter():
@@ -92,20 +93,20 @@ def quitter():
 
 
 # fonctions liées à l'interface autre que le menu
-def add_player(name, file_save):
-    check_empty_file = os.stat(file_save).st_size == 0
-    name = name.upper()
+def add_player(name):
+    check_empty_file = os.stat(save_file).st_size == 0
+    name = name
     if check_empty_file:
-        with open(file_save, 'a') as fichier:
+        with open(save_file, 'a') as fichier:
             fichier.write(f"{name}=10")
 
     if not check_empty_file:
-        with open(file_save, 'a') as fichier:
+        with open(save_file, 'a') as fichier:
                 fichier.write(f"\n{name}=10")
 
 
-def get_list_players(file_save):
-    with open(file_save, 'r') as fichier:
+def get_list_players():
+    with open(save_file, 'r') as fichier:
         lignes = fichier.readlines()
         joueur = []
         for l in lignes:
@@ -114,18 +115,18 @@ def get_list_players(file_save):
     return joueur
 
 
-def get_score_player_name(name, file_save):
-    with open(file_save, 'r') as fichier:
+def get_score_from_save(name):
+    with open(save_file, 'r') as fichier:
         lignes = fichier.readlines()
         for l in lignes:
             nom_joueur = l.split("=")[0]
             score = l.split("=")[1]
             if name == nom_joueur:
-                return nom_joueur, score
+                return score
 
 
-def write_player_score(name, file_save, score):
-    with open(file_save, 'w') as fichier:
+def write_player_score(name, score):
+    with open(save_file, 'w') as fichier:
         lignes = fichier.readlines()
         nb_lignes = len(lignes)
         for i in nb_lignes:
@@ -176,102 +177,66 @@ class interface_main(tk.Frame):
         tk.Frame.__init__(self)
         self.parent = parent
         self.add_player_input = None
-
+        self.lettre = lettre()
         self.player = joueur()
 
         self.label_player = tk.Label(parent)
         self.label_player.grid(row=0, column=1, sticky='nsew')
-        self.main_display = display(parent, 0, 0, 20, 10, 20).get_text()
+        self.main_display = display(parent, 0, 0, 30, 10, 20).get_text()
 
         self.select_player_input = saisie(parent, 1, 1, "nom du joueur")
+
         self.pendu_play_button = bouton(parent, 2, 1, "jouer", self.pendu_game)
 
-
-
-    def manage_player(self):
-        players_list = get_list_players(save_file)
-        player_name = self.select_player_input.get_value()
-
-        if player_name == False:
-            player_name = "ANONYME"
-            if player_name not in players_list:
-                add_player(player_name, save_file)
-                self.player = joueur(player_name, 10)
-                string = str(f"nom du joueur: {self.player.get_name} // score: {self.player.get_score}")
-                self.label_player.config(text=string)
-
-            else:
-                n, s = get_score_player_name(player_name, save_file)
-                self.player.set_name(n)
-                self.player.set_score(s)
-                string = str(f"nom du joueur: {self.player.get_name} // score: {self.player.get_score}")
-                self.label_player.config(text=string)
-
-
-        elif player_name in players_list:
-            n, s = get_score_player_name(player_name, save_file)
-            self.player = joueur(n, s)
-            string = str(f"nom du joueur: {self.player.get_name} // score: {self.player.get_score}")
-            self.label_player.config(text=string)
-
-        elif player_name not in players_list:
-            add_player(player_name, save_file)
-            n, s = get_score_player_name(player_name, save_file)
-            self.player = joueur(n, s)
-            string = str(f"nom du joueur: {self.player.get_name} // score: {self.player.get_score}")
-            self.label_player.config(text=string)
-
+        self.lettre_input = saisie(self.parent, 3, 2, "lettre")
+        self.lettre_button = bouton(self.parent, 3, 1, "valider lettre", self.get_letter)
 
 
     def pendu_game(self):
-        mot = mot(tentative=10)
+        self.check_player()
 
 
-        if self.select_player_input.get_value() == False:
-            string = "Renseignez un nom de joueur"
-            self.label_player.config(text=string)
+    def get_letter(self):
+        a = self.lettre_input.get_value()
+        self.lettre.set_name(a)
+        self.affichage(self.main_display, self.lettre.get_name())
 
-        else:
-            player_input = self.select_player_input.get_value()
-            players = get_list_players(save_file)
 
-            if player_input not in players:
-                add_player(player_input, save_file)
-                self.player.set_name(player_input)
-                self.player.set_score(10)
+    def check_player(self):
+        a = self.select_player_input.get_value()
+        self.player.set_name(a)
+        nom_joueur = self.player.get_name()
+        nom_joueur = nom_joueur.upper()
+        players = get_list_players()
 
+        if a:
+            if players:
+                if nom_joueur in players:
+                    for p in players:
+                        if nom_joueur == p:
+                            self.player.set_name(nom_joueur)
+                            s = get_score_from_save(nom_joueur)
+                            self.player.set_score(s)
+                            self.label_player.config(text=self.player.get_name())
+                else:
+                    self.player.set_name(nom_joueur)
+                    self.player.set_score(10)
+                    add_player(nom_joueur)
+                    self.label_player.config(text=self.player.get_name())
             else:
-                n, s = get_score_player_name(player_input, save_file)
-                self.player.set_name(n)
-                self.player.set_score(s)
-
-            mot_random = random.choice(words_list)
-            mot.set_name(mot_random)
-
-            self.lettre_input = saisie(self.parent, 3, 2, "lettre")
-            self.lettre_button = bouton(self.parent, 3, 1, "valider lettre", self.check_lettre)
+                self.player.set_name(nom_joueur)
+                self.player.set_score(10)
+                add_player(nom_joueur)
+                self.label_player.config(text=self.player.get_name())
+        else:
+            self.label_player.config(text="Renseignez un nom de joueur")
 
 
-    def check_lettre(self):
-        name = self.mot.get_name()
-        tentative = self.mot.get_tentative()
-
-        if tentative != 0:
-            a = self.lettre_input.get_value()
-            name, tentative  = half_guessed_word(name, a, tentative)
-            mot.set_name(name)
-            mot.set_tentative(tentative)
-
-            string = f"mot:{name}  \ntentative:{tentative}"
-            affichage(self.main_display, string)
-
-
-
-
-
-
-
-
+#
+#   TO DO 
+#   fonction du pendu
+#
+#
 
 
 
@@ -312,6 +277,8 @@ class lettre():
 
 
 
+
+
 class mot():
     def __init__(self, name=None, tentative=None):
         self.name = name
@@ -331,6 +298,9 @@ class mot():
 
     def lower_tentative(self, value):
         self.tentative = self.get_tentative() - value
+
+
+
 
 
 class joueur():
@@ -440,7 +410,6 @@ class saisie(tk.Entry):
             Méthode qui récupere la valeur rentrée
         '''
         a = self.saisie.get()
-        
         if not a:
             return False
         else:
@@ -465,9 +434,9 @@ class menu_bar(tk.Menu):
         tk.Menu.__init__(self)
 
         menu_Fichier = tk.Menu(self, tearoff=0)
-        menu_Fichier.add_command(label="Nouveau")
-        menu_Fichier.add_command(label="Créer une sauvegarde", command=create_save_file)
-        menu_Fichier.add_command(label="Ouvrir sauvegarde", command=open_save_file)
+        menu_Fichier.add_command(label="Nouveau (inexistant")
+        # menu_Fichier.add_command(label="Créer une sauvegarde", command=create_save_file)
+        # menu_Fichier.add_command(label="Ouvrir sauvegarde", command=open_save_file)
         menu_Fichier.add_separator()
         menu_Fichier.add_command(label="Quitter", command=quitter)
 
