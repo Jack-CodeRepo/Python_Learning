@@ -21,3 +21,20 @@
 2020-09-20 16:15:43,390 :: Fonction= calculer_temps :: message_02= Temps passé pour avoir 2500 PP: 6:32:26 hh:mm:ss
 2020-09-20 16:16:01,880 :: Fonction= calculer_temps :: message_01= Temps passé pour avoir 1 PP: 0:00:10 hh:mm:ss
 2020-09-20 16:16:01,880 :: Fonction= calculer_temps :: message_02= Temps passé pour avoir 30000 PP: 3 days, 6:29:08 hh:mm:ss
+2020-09-22 15:41:18,355 :: Fonction= calculer_PP :: message_01= 394 PP gagné en 1 heures.
+2020-09-22 15:41:19,773 :: Fonction= calculer_temps :: message_01= Temps passé pour avoir 1 PP: 0:00:10 hh:mm:ss
+2020-09-22 15:41:19,773 :: Fonction= calculer_temps :: message_02= Temps passé pour avoir 2500 PP: 6:21:24 hh:mm:ss
+2020-09-22 15:41:20,596 :: Fonction= calculer_PP :: message_01= 394 PP gagné en 1 heures.
+2020-09-22 15:41:21,242 :: Fonction= calculer_temps :: message_01= Temps passé pour avoir 1 PP: 0:00:10 hh:mm:ss
+2020-09-22 15:41:21,242 :: Fonction= calculer_temps :: message_02= Temps passé pour avoir 2500 PP: 6:21:24 hh:mm:ss
+2020-09-22 15:41:33,153 :: Fonction= calculer_temps :: message_01= Temps passé pour avoir 1 PP: 0:00:10 hh:mm:ss
+2020-09-22 15:41:33,154 :: Fonction= calculer_temps :: message_02= Temps passé pour avoir 2500 PP: 6:20:34 hh:mm:ss
+2020-09-22 15:41:34,333 :: Fonction= calculer_PP :: message_01= 395 PP gagné en 1 heures.
+2020-09-22 15:41:40,726 :: Fonction= calculer_PP :: message_01= 395 PP gagné en 1 heures.
+2020-09-22 15:41:46,687 :: Fonction= calculer_temps :: message_01= Temps passé pour avoir 1 PP: 0:00:10 hh:mm:ss
+2020-09-22 15:41:46,687 :: Fonction= calculer_temps :: message_02= Temps passé pour avoir 2500 PP: 6:16:30 hh:mm:ss
+2020-09-22 15:41:48,063 :: Fonction= calculer_PP :: message_01= 399 PP gagné en 1 heures.
+2020-09-22 15:41:48,965 :: Fonction= calculer_PP :: message_01= 399 PP gagné en 1 heures.
+2020-09-22 15:41:56,183 :: Fonction= calculer_temps :: message_01= Temps passé pour avoir 1 PP: 0:00:09 hh:mm:ss
+2020-09-22 15:41:56,210 :: Fonction= calculer_temps :: message_02= Temps passé pour avoir 2500 PP: 5:51:24 hh:mm:ss
+2020-09-22 15:41:57,896 :: Fonction= calculer_PP :: message_01= 427 PP gagné en 1 heures.
