@@ -12,13 +12,12 @@ from tkinter import filedialog
 import configparser
 import os
 
+from words import words_list
+
 # ==================================================================================================
 #   VARIABLES GLOBALES
 # ==================================================================================================
 
-lol = None
-save_file = None
-word_dict_file = None
 player_name = None
 
 # ==================================================================================================
@@ -36,28 +35,33 @@ player_name = None
 # ==================================================================================================
 
 # fonctions liées au fichier pendu.conf
-def init_config():
-    config = configparser.ConfigParser()
-    config.read("pendu.conf")
-    save_file = config.get("FILES", "save_file")
-    word_dict_file = config.get("FILES", "word_dict_file")
-
-    return save_file, word_dict_file
-
 
 def modify_conf(section, option, value):
     config = configparser.ConfigParser()
     config.read("pendu.conf")
     config.set(section, option, value)
 
-    with open("configuration.conf", 'w') as configfile:
+    with open("pendu.conf", 'w') as configfile:
         config.write(configfile)
+
+
+def get_config_element(section, option):
+    config = configparser.ConfigParser()
+    config.read("pendu.conf")
+    value = config.get(section, option)
+
+    return value
+
 
 
 # fonctions liées au menu
 def create_save_file():
-    default_file = tk.filedialog.askdirectory()
-    modify_conf("FILES", "save_file", default_file+"/pendu/save.txt")
+    path_save_file = tk.filedialog.askdirectory()
+    new_save_file = path_save_file+"/save_file.txt"
+
+    f = open(new_save_file, "w")
+    f.close()
+    modify_conf("FILES", "save_file", new_save_file)
 
 
 def open_save_file(defaut_folder=None, default_file=None):
@@ -65,31 +69,39 @@ def open_save_file(defaut_folder=None, default_file=None):
         defaut_folder = "C:/"
 
     if not default_file:
-        default_file = save_file
-        if not save_file:
-            default_file = tk.filedialog.askopenfilename(initialdir=defaut_folder,
+        get_save_file = get_config_element("FILES", "save_file")
+        if not get_save_file:
+            selected_file = tk.filedialog.askopenfilename(initialdir=defaut_folder,
                                                 filetypes=[("fichier texte", "*.txt"),
                                                             ("tout les fichiers", "*.*")
                                                 ]
                                                 )
-        modify_conf("FILES", "save_file", default_file)
+
+        modify_conf("FILES", "save_file", selected_file)
 
     return default_file
 
 
+def quitter():
+    exit()
+
+
+
+
+
 # fonctions liées à l'interface autre que le menu
-def add_player(name):
-    check_empty_file = os.stat(save_file).st_size == 0
+def add_player(name, file_save):
+    check_empty_file = os.stat(file_save).st_size == 0
     if check_empty_file:
-        with open(save_file, 'a') as fichier:
+        with open(file_save, 'a') as fichier:
             fichier.write(f"{name}=10")
     if not check_empty_file:
-        with open(save_file, 'a') as fichier:
+        with open(file_save, 'a') as fichier:
             fichier.write(f"\n{name}=10")
 
 
-def get_list_players():
-    with open(save_file, 'r') as fichier:
+def get_list_players(file_save):
+    with open(file_save, 'r') as fichier:
         lignes = fichier.readlines()
         joueur = []
         for l in lignes:
@@ -98,8 +110,8 @@ def get_list_players():
     return joueur
 
 
-def get_score_player_name(name):
-    with open(save_file, 'r') as fichier:
+def get_score_player_name(name, file_save):
+    with open(file_save, 'r') as fichier:
         lignes = fichier.readlines()
         for l in lignes:
             nom_joueur = l.split("=")[0]
@@ -108,8 +120,17 @@ def get_score_player_name(name):
                 return nom_joueur, score
 
 
-def quitter():
-    exit()
+def get_liste_mots(fichier):
+    import words
+
+
+
+
+
+
+
+
+
 
 
 # ==================================================================================================
@@ -122,26 +143,65 @@ class interface_main(tk.Frame):
         self.add_player_input = None
         self.player_name = None
         self.player_score = None
+        self.save_file = None
 
-        self.select_player_input = saisie(parent, 0, 0, "nom du joueur")
-        self.output = display(parent, 3, 0, 125, 20).get_text()
+        self.label_player = tk.Label(parent)
+        self.main_display = display(parent, 0, 0, 20, 20, 4)
+        self.select_player_input = saisie(parent, 0, 2, "nom du joueur")
         self.select_player = bouton(parent, 0, 1, "Valider Joueur", self.manage_player)
+        self.pendu_jouer = bouton(parent, 1, 1, "jouer", self.pendu_game)
+
+
+    def check_save_file(self):
+        self.save_file = get_config_element("FILES", "save_file")
+        if not self.save_file:
+            create_save_file()
+            self.save_file = get_config_element("FILES", "save_file")
 
 
     def manage_player(self):
-        players_list = get_list_players()
+        self.check_save_file()
+        players_list = get_list_players(self.save_file)
         player_name = self.select_player_input.get_value()
         player_name = player_name.upper()
 
-        if player_name not in players_list:
-            add_player(player_name)
+        if not player_name:
+            player_name = "ANONYME"
+            add_player(player_name, self.save_file)
             self.player_name = player_name
             string = f"nom du joueur: {self.player_name} // score: 10"
-            self.affichage(self.output, string)
+            # self.affichage(self.output, string)
+            self.label_player.grid(row=0, column=4)
+            self.label_player.config(text=string)
+
+        if player_name not in players_list:
+            add_player(player_name, self.save_file)
+            self.player_name = player_name
+            string = str(f"nom du joueur: {self.player_name} // score: 10")
+            # self.affichage(self.output, string)
+            self.label_player.grid(row=0, column=4)
+            self.label_player.config(text=string)
         else:
-            self.player_name, self.player_score = get_score_player_name(player_name)
-            string = f"nom du joueur: {self.player_name} // score: {self.player_score}"
-            self.affichage(self.output, string)
+            self.player_name, self.player_score = get_score_player_name(player_name, self.save_file)
+            string = str(f"nom du joueur: {self.player_name} // score: {self.player_score}")
+            # self.affichage(self.output, string)
+            self.label_player.grid(row=0, column=4)
+            self.label_player.config(text=string)
+
+
+    def pendu_game(self):
+        self.check_save_file
+        if not self.player_name:
+            player_name = "ANONYME"
+            add_player(player_name, self.save_file)
+            self.player_name = player_name
+            string = f"nom du joueur: {self.player_name} // score: 10"
+            # self.affichage(self.output, string)
+            self.label_player.grid(row=0, column=4)
+            self.label_player.config(text=string)
+
+            mot_pendu = words_list
+
 
 
     def affichage(self, objet, liste):
@@ -180,15 +240,16 @@ class display(tk.Text):
         h: hauteur de la zone d'affichage
 
     '''
-    def __init__(self, parent, xRow, yCol, w, h):
+    def __init__(self, parent, xRow, yCol, w, h, rSpan):
         tk.Text.__init__(self)
         self.xRow = xRow
         self.yCol = yCol
         self.width = w
         self.height = h
+        self.rowspan = rSpan
 
         self.boite_texte = tk.Text(parent, width=self.width, height=self.height, state=tk.DISABLED)
-        self.boite_texte.grid(row=self.xRow, column=self.yCol, columnspan=3)
+        self.boite_texte.grid(row=self.xRow, column=self.yCol, rowspan=self.rowspan)
 
 
     def get_text(self):
@@ -299,11 +360,10 @@ class menu_bar(tk.Menu):
 #   SCRIPT
 # ==================================================================================================
 
-save_file, word_dict_file = init_config()
-
 root = tk.Tk()
 root.title("Jeu du pendu")
 root.config(menu=menu_bar(root))
+root.geometry("500x200")
 
 interface_main(root)
 
