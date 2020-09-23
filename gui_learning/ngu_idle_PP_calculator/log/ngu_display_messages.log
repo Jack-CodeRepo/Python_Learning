@@ -44,3 +44,16 @@
 2020-09-23 09:04:56,244 :: Fonction= calculer_PP :: message_01= 429 PP gagné en 1 heures.
 2020-09-23 09:04:57,134 :: Fonction= calculer_temps :: message_01= Temps passé pour avoir 1 PP: 0:00:09 hh:mm:ss
 2020-09-23 09:04:57,134 :: Fonction= calculer_temps :: message_02= Temps passé pour avoir 2500 PP: 5:50:00 hh:mm:ss
+2020-09-23 15:44:00,298 :: Fonction= calculer_temps :: message_01= Temps passé pour avoir 1 PP: 0:00:10 hh:mm:ss (280000 points)
+2020-09-23 15:44:00,298 :: Fonction= calculer_temps :: message_02= Temps passé pour avoir 30000 PP: 3 days, 3:53:35 hh:mm:ss (280000 points)
+2020-09-23 15:44:02,237 :: Fonction= calculer_PP :: message_01= 1186 PP gagné en 3 heures (280000 points)
+2020-09-23 15:44:49,776 :: Fonction= calculer_temps :: message_01= Temps passé pour avoir 1 PP: 0:00:10 hh:mm:ss (280000 points)
+2020-09-23 15:44:49,776 :: Fonction= calculer_temps :: message_02= Temps passé pour avoir 30000 PP: 3 days, 3:53:35 hh:mm:ss (280000 points)
+2020-09-23 15:44:53,250 :: Fonction= calculer_PP :: message_01= 1582 PP gagné en 4 heures (280000 points)
+2020-09-23 15:44:54,261 :: Fonction= calculer_temps :: message_01= Temps passé pour avoir 1 PP: 0:00:10 hh:mm:ss (280000 points)
+2020-09-23 15:44:54,262 :: Fonction= calculer_temps :: message_02= Temps passé pour avoir 30000 PP: 3 days, 3:53:35 hh:mm:ss (280000 points)
+2020-09-23 15:47:01,209 :: Fonction= calculer_PP :: message_01= 2372 PP gagné en 6 heures (280000 points)
+2020-09-23 15:47:02,568 :: Fonction= calculer_temps :: message_01= Temps passé pour avoir 1 PP: 0:00:10 hh:mm:ss (280000 points)
+2020-09-23 15:47:02,568 :: Fonction= calculer_temps :: message_02= Temps passé pour avoir 30000 PP: 3 days, 3:53:35 hh:mm:ss (280000 points)
+2020-09-23 15:47:08,718 :: Fonction= calculer_temps :: message_01= Temps passé pour avoir 1 PP: 0:00:03 hh:mm:ss (1000000 points)
+2020-09-23 15:47:08,718 :: Fonction= calculer_temps :: message_02= Temps passé pour avoir 30000 PP: 21:15:00 hh:mm:ss (1000000 points)

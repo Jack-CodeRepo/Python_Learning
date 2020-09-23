@@ -35,7 +35,7 @@ chemin_complet_fichier = None
 
 def init_config():
     config = configparser.ConfigParser()
-    config.read("configuration.conf")
+    config.read("log_explorer.conf")
     folder = config.get("EXPLORER", "default_path")
     fichier = config.get("EXPLORER", "last_log_open")
 
@@ -185,7 +185,7 @@ class output_display(tk.Text):
         self.height = h
 
         self.boite_texte = tk.Text(parent, width=self.width, height=self.height, state=tk.DISABLED)
-        self.boite_texte.grid(row=self.xRow, column=self.yCol, columnspan=3)
+        self.boite_texte.grid(row=self.xRow, column=self.yCol, columnspan=10)
 
 
     def get_text(self):
