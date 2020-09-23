@@ -38,7 +38,7 @@ class interface(tk.Frame):
         self.saisie_respawn = saisie(parent, 1, 0,"Respawn rate (seconds)")
         self.saisie_goal = saisie(parent, 2, 0, "goal")
         self.saisie_goal_time = saisie(parent, 3, 0, "time aimed (hour)")
-        self.output = texte(parent, 4, 0, 50, 3).get_text()
+        self.output = texte(parent, 4, 0, 75, 3).get_text()
 
 
 
@@ -50,9 +50,9 @@ class interface(tk.Frame):
         pp_per_hour = 60*pp_per_min
         result = ceil(pp_per_hour*t_aimed)
         self.pp_earned = result
-
+        p = self.saisie_point.get_value()
         # a chaque calcul, deux lignes de message sont générées et affichées
-        string01 = f"{self.pp_earned} PP gagné en {t_aimed} heures."
+        string01 = f"{self.pp_earned} PP gagné en {t_aimed} heures ({p} points)"
         self.display( string01)
 
         logger.info(f"Fonction= calculer_PP :: message_01= {string01}")
@@ -65,13 +65,15 @@ class interface(tk.Frame):
         t = self.time_one_pp()
         time_01_pp = ceil(t)
         time_goal = ceil(g * t)
+        p = self.saisie_point.get_value()
         # génération de valeur temporelles, attribution en variable
         self.time_un_pp = timedelta(seconds=time_01_pp)
         self.time_goal = timedelta(seconds=time_goal)
 
+
         # a chaque calcul, deux lignes de message sont générées et affichées
-        string01 = f"Temps passé pour avoir 1 PP: {self.time_un_pp} hh:mm:ss"
-        string02 = f"Temps passé pour avoir {g} PP: {self.time_goal} hh:mm:ss"
+        string01 = f"Temps passé pour avoir 1 PP: {self.time_un_pp} hh:mm:ss ({p} points)"
+        string02 = f"Temps passé pour avoir {g} PP: {self.time_goal} hh:mm:ss ({p} points)"
         self.display( string01 + '\n' + string02 )
         logger.info(f"Fonction= calculer_temps :: message_01= {string01}")
         logger.info(f"Fonction= calculer_temps :: message_02= {string02}")
@@ -176,7 +178,7 @@ class texte(tk.Text):
         self.height = h
 
         self.boite_texte = tk.Text(parent, width=self.width, height=self.height, state=tk.DISABLED)
-        self.boite_texte.grid(row=self.xRow, column=self.yCol, columnspan=3)
+        self.boite_texte.grid(row=self.xRow, column=self.yCol, columnspan=8)
 
 
 
