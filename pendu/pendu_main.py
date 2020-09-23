@@ -176,9 +176,9 @@ class interface_main(tk.Frame):
     def __init__(self, parent):
         tk.Frame.__init__(self)
         self.parent = parent
-        self.add_player_input = None
         self.lettre = lettre()
         self.player = joueur()
+        self.mot = mot()
 
         self.label_player = tk.Label(parent)
         self.label_player.grid(row=0, column=1, sticky='nsew')
@@ -212,6 +212,7 @@ class interface_main(tk.Frame):
         if a:
             if players:
                 if nom_joueur in players:
+                    # si le joueur existe
                     for p in players:
                         if nom_joueur == p:
                             self.player.set_name(nom_joueur)
@@ -219,10 +220,12 @@ class interface_main(tk.Frame):
                             self.player.set_score(s)
                             self.label_player.config(text=self.player.get_name())
                 else:
+                    # si le joueur n'existe pas
                     self.player.set_name(nom_joueur)
                     self.player.set_score(10)
                     add_player(nom_joueur)
                     self.label_player.config(text=self.player.get_name())
+            # si le fichier de sauvegarde est vide
             else:
                 self.player.set_name(nom_joueur)
                 self.player.set_score(10)
