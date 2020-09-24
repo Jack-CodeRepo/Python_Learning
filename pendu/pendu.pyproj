@@ -22,15 +22,35 @@
     <Content Include="save_file.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="classes\lettre.py" />
-    <Compile Include="classes\mot.py" />
-    <Compile Include="classes\player.py" />
+    <Compile Include="classes\elements\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="classes\interface\menu_bar.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="classes\interface\bouton.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="classes\interface\display.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="classes\interface\saisie.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="classes\interface\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="classes\elements\lettre.py" />
+    <Compile Include="classes\elements\mot.py" />
+    <Compile Include="classes\elements\player.py" />
     <Compile Include="classes\__init__.py" />
     <Compile Include="pendu_main.py" />
     <Compile Include="words.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="classes" />
+    <Folder Include="classes\interface\" />
+    <Folder Include="classes\elements\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
 </Project>

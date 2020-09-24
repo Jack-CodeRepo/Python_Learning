@@ -6,21 +6,28 @@
 #   IMPORT
 # ==================================================================================================
 
+# import framework GUI tkinter
 import tkinter as tk
 from tkinter import filedialog
 
+# import module standard python
 import configparser
 import os
 import random
 
+# import dictionnaire
 from words import words_list
 
-import classes.lettre
-import classes.mot
-import classes.player
+# import des éléments modifiables
+import classes.elements.player
+import classes.elements.mot
+import classes.elements.lettre
 
-
-
+# import des composants d'interface
+import classes.interface.menu_bar
+import classes.interface.bouton
+import classes.interface.saisie
+import classes.interface.display
 
 # ==================================================================================================
 #   VARIABLES GLOBALES
@@ -60,41 +67,6 @@ def get_config_element(section, option):
     value = config.get(section, option)
 
     return value
-
-
-
-# fonctions liées au menu
-# def create_save_file():
-#     path_save_file = tk.filedialog.askdirectory()
-#     new_save_file = path_save_file+"/save_file.txt"
-
-#     f = open(new_save_file, "w")
-#     f.close()
-#     modify_conf("FILES", "save_file", new_save_file)
-
-
-# def open_save_file(defaut_folder=None, default_file=None):
-#     if not defaut_folder:
-#         defaut_folder = "C:/"
-
-#     if not default_file:
-#         get_save_file = get_config_element("FILES", "save_file")
-#         if not get_save_file:
-#             selected_file = tk.filedialog.askopenfilename(initialdir=defaut_folder,
-#                                                 filetypes=[("fichier texte", "*.txt"),
-#                                                             ("tout les fichiers", "*.*")
-#                                                 ]
-#                                                 )
-
-#         modify_conf("FILES", "save_file", selected_file)
-
-#     return default_file
-
-
-def quitter():
-    exit()
-
-
 
 
 
@@ -153,24 +125,28 @@ def hide_word(word):
     return mot
 
 
-def half_guessed_word(word, lettre, atempt):
 
-    atempt = atempt
-    mot = []
-    mot_long = len(word)
-    word = list(word)
-    if lettre in word:
-        for i in range(mot_long):
-            if word[i] == lettre:
-                mot.insert(i, lettre)
-            else:
-                mot.insert(i, "_ ")
+
+def affichage(objet, liste):
+    '''
+        affiche les éléments
+        Arguments:
+        objet: objet gérant endroit où afficher (l'objet doit etre créé avec la classe display)
+        liste: liste des éléments à afficher
+
+    '''
+    if type(liste) is list:
+        objet.config(state=tk.NORMAL, font="Calibri")
+        objet.delete('1.0', tk.END)
+        for l in liste:
+            objet.insert('1.0', l)
+        objet.config(state=tk.DISABLED)
+
     else:
-        atempt -= 1
-    return mot, atempt
-
-
-
+        objet.config(state=tk.NORMAL, font="Calibri")
+        objet.delete('1.0', tk.END)
+        objet.insert('1.0', liste)
+        objet.config(state=tk.DISABLED)
 
 
 
@@ -182,20 +158,22 @@ class interface_main(tk.Frame):
     def __init__(self, parent):
         tk.Frame.__init__(self)
         self.parent = parent
-        self.player = classes.player.class_player()
-        self.mot = classes.mot.class_mot()
-        self.lettre = classes.lettre.class_lettre()
+
+        self.player = classes.elements.player.class_player()
+        self.mot = classes.elements.mot.class_mot()
+        self.mot_cache = classes.elements.mot.class_mot()
+        self.lettre = classes.elements.lettre.class_lettre()
 
         self.label_player = tk.Label(parent)
         self.label_player.grid(row=0, column=1, sticky='nsew')
-        self.main_display = display(parent, 0, 0, 30, 10, 20).get_text()
 
-        self.select_player_input = saisie(parent, 1, 1, "nom du joueur")
+        self.main_display = classes.interface.display.display(parent, 0, 0, 30, 10, 20).get_text()
 
-        self.pendu_play_button = bouton(parent, 2, 1, "jouer", self.pendu_game)
+        self.select_player_input = classes.interface.saisie.saisie(parent, 1, 1, "nom du joueur")
+        self.lettre_input = classes.interface.saisie.saisie(self.parent, 3, 2, "lettre")
 
-        self.lettre_input = saisie(self.parent, 3, 2, "lettre")
-        self.lettre_button = bouton(self.parent, 3, 1, "valider lettre", self.get_letter)
+        self.pendu_play_button = classes.interface.bouton.bouton(parent, 2, 1, "jouer", self.pendu_game)
+        self.lettre_button = classes.interface.bouton.bouton(self.parent, 3, 1, "valider lettre", self.get_letter)
 
 
     def pendu_game(self):
@@ -205,17 +183,17 @@ class interface_main(tk.Frame):
     def get_letter(self):
         a = self.lettre_input.get_value()
         self.lettre.set_name(a)
-        self.affichage(self.main_display, self.lettre.get_name())
 
 
     def check_player(self):
         a = self.select_player_input.get_value()
         self.player.set_name(a)
         nom_joueur = self.player.get_name()
-        nom_joueur = nom_joueur.upper()
+
         players = get_list_players()
 
         if a:
+            nom_joueur = nom_joueur.upper()
             if players:
                 if nom_joueur in players:
                     # si le joueur existe
@@ -224,22 +202,26 @@ class interface_main(tk.Frame):
                             self.player.set_name(nom_joueur)
                             s = get_score_from_save(nom_joueur)
                             self.player.set_score(s)
-                            self.label_player.config(text=self.player.get_name())
+                            string = f"joueur: {self.player.get_name()} // score: {self.player.get_score()}"
+                            self.label_player.config(text=string)
                 else:
                     # si le joueur n'existe pas
                     self.player.set_name(nom_joueur)
                     self.player.set_score(10)
                     add_player(nom_joueur)
-                    self.label_player.config(text=self.player.get_name())
+                    string = f"joueur: {self.player.get_name()} // score: {self.player.get_score()}"
+                    self.label_player.config(text=string)
             # si le fichier de sauvegarde est vide
             else:
                 self.player.set_name(nom_joueur)
                 self.player.set_score(10)
-                add_player(nom_joueur)
-                self.label_player.config(text=self.player.get_name())
+                add_player(nom_joueur) 
+                string = f"joueur: {self.player.get_name()} // score: {self.player.get_score()}"
+                self.label_player.config(text=string)
         else:
-            self.label_player.config(text="Renseignez un nom de joueur")
-
+            string = "Renseignez un nom de joueur"
+            self.label_player.config(text=string)
+            affichage(self.main_display, string)
 
 #
 #   TO DO 
@@ -249,166 +231,21 @@ class interface_main(tk.Frame):
 
 
 
-    def affichage(self, objet, liste):
-        '''
-            affiche les éléments
-            Arguments:
-            objet: objet gérant endroit où afficher (l'objet doit etre créé avec la classe display)
-            liste: liste des éléments à afficher
-
-        '''
-        if type(liste) is list:
-            objet.config(state=tk.NORMAL, font="Calibri")
-            objet.delete('1.0', tk.END)
-            for l in liste:
-                objet.insert('1.0', l)
-            objet.config(state=tk.DISABLED)
-
-        else:
-            objet.config(state=tk.NORMAL, font="Calibri")
-            objet.delete('1.0', tk.END)
-            objet.insert('1.0', liste)
-            objet.config(state=tk.DISABLED)
-
-
-
-
-
-class display(tk.Text):
-    '''
-        type: class
-        Gere la zone d'affichage
-
-        Arguments:
-        xRow: coordonnée x (horizontal) de la zone d'affichage
-        yCol: coordonnée y (vertical) de la zone d'affichage
-        w: largeur de la zone d'affichage
-        h: hauteur de la zone d'affichage
-
-    '''
-    def __init__(self, parent, xRow, yCol, w, h, rSpan):
-        tk.Text.__init__(self)
-        self.xRow = xRow
-        self.yCol = yCol
-        self.width = w
-        self.height = h
-        self.rowspan = rSpan
-
-        self.boite_texte = tk.Text(parent, width=self.width, height=self.height, state=tk.DISABLED)
-        self.boite_texte.grid(row=self.xRow, column=self.yCol, rowspan=self.rowspan)
-
-
-    def get_text(self):
-        return self.boite_texte
-
-
-
-
-
-
-class bouton(tk.Button):
-    '''
-        type: class
-        Gere la zone d'affichage
-
-        Arguments:
-        xRow: coordonnée x (horizontal) de la zone d'affichage
-        yCol: coordonnée y (vertical) de la zone d'affichage
-        titre: nom du bouton
-        cmd: fonction à associer au bouton
-
-    '''
-    def __init__(self, parent, xRow, yCol, titre, cmd):
-        tk.Button.__init__(self)
-        self.xRow = xRow
-        self.yCol = yCol
-
-        self.bouton = tk.Button(parent, text=titre, height=1, width=15, command=cmd)
-        self.bouton.grid(row=self.xRow, column=self.yCol, sticky ="nsew")
-
-
-
-
-
-
-class saisie(tk.Entry):
-    '''
-        type: class
-        Gere les zone de saisie
-
-        Arguments:
-        xRow: coordonnée x (horizontal) de la zone de saisie
-        yCol: coordonnée y (vertical) de la zone de saisie
-        label: nom de la zone saisie, positionne à gauche de la zone
-    '''
-    def __init__(self, parent, xRow, yCol, label=None):
-        tk.Entry.__init__(self)
-        self.xRow = xRow
-        self.yCol = yCol
-        self.label = label
-
-        # création zone de saisie (entry)
-        self.saisie = tk.Entry(parent, width=10)
-        self.saisie.grid(row=self.xRow, 
-                            column=self.yCol+1
-                            )
-        # création du nom de la zone de saisie (label)
-        self.saisie_label = tk.Label(parent, text=self.label)
-        self.saisie_label.grid(row=self.xRow, column=self.yCol, sticky="nsew")
-
-
-    def get_value(self):
-        '''
-            Méthode qui récupere la valeur rentrée
-        '''
-        a = self.saisie.get()
-        if not a:
-            return False
-        else:
-            return self.saisie.get()
-
-
-
-
-
-
-
-class menu_bar(tk.Menu):
-    '''
-        type: class
-        Gere la barre de menu
-
-        Arguments:
-        parent: fenetre parente (main window)
-
-    '''
-    def __init__(self, parent):
-        tk.Menu.__init__(self)
-
-        menu_Fichier = tk.Menu(self, tearoff=0)
-        menu_Fichier.add_command(label="Nouveau (inexistant")
-        # menu_Fichier.add_command(label="Créer une sauvegarde", command=create_save_file)
-        # menu_Fichier.add_command(label="Ouvrir sauvegarde", command=open_save_file)
-        menu_Fichier.add_separator()
-        menu_Fichier.add_command(label="Quitter", command=quitter)
-
-        menu_Help = tk.Menu(self, tearoff=0)
-        menu_Help.add_command(label="Documentation (inexistant)")
-        menu_Help.add_command(label="Mail au support (inexistant)")
-
-        self.add_cascade(label="Fichier", menu=menu_Fichier)
-        self.add_cascade(label="Help", menu=menu_Help)
 
 
 
 # ==================================================================================================
 #   SCRIPT
 # ==================================================================================================
-save_file = get_config_element("FILES", "save_file")
-
 root = tk.Tk()
+
+save_file = get_config_element("FILES", "save_file")
+menu = classes.interface.menu_bar.class_menu_bar()
+
+
 root.title("Jeu du pendu")
-root.config(menu=menu_bar(root))
+root.config(menu=menu)
+
 root.geometry("600x200")
 
 interface_main(root)
