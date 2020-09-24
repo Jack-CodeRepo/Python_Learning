@@ -15,6 +15,12 @@ import random
 
 from words import words_list
 
+import classes.lettre
+import classes.mot
+import classes.player
+
+
+
 
 # ==================================================================================================
 #   VARIABLES GLOBALES
@@ -176,9 +182,9 @@ class interface_main(tk.Frame):
     def __init__(self, parent):
         tk.Frame.__init__(self)
         self.parent = parent
-        self.lettre = lettre()
-        self.player = joueur()
-        self.mot = mot()
+        self.player = classes.player.class_player()
+        self.mot = classes.mot.class_mot()
+        self.lettre = classes.lettre.class_lettre()
 
         self.label_player = tk.Label(parent)
         self.label_player.grid(row=0, column=1, sticky='nsew')
@@ -265,63 +271,6 @@ class interface_main(tk.Frame):
             objet.config(state=tk.DISABLED)
 
 
-
-class lettre():
-    def __init__(self, lettre=None):
-        self.lettre = lettre
-
-    def get_name(self):
-        return self.lettre
-
-
-    def set_name(self, value):
-        self.lettre = value
-
-
-
-
-
-
-class mot():
-    def __init__(self, name=None, tentative=None):
-        self.name = name
-        self.tentative = tentative
-
-    def get_name(self):
-        return self.name
-
-    def get_tentative(self):
-        return self.tentative
-
-    def set_name(self, value):
-        self.name = value
-
-    def set_tentative(self, value):
-        self.tentative = value
-
-    def lower_tentative(self, value):
-        self.tentative = self.get_tentative() - value
-
-
-
-
-
-class joueur():
-    def __init__(self, name=None, score=None):
-        self.name = name
-        self.score = score
-
-    def get_name(self):
-        return self.name
-
-    def get_score(self):
-        return self.score
-
-    def set_name(self, value):
-        self.name = value
-
-    def set_score(self, value):
-        self.score = value
 
 
 
