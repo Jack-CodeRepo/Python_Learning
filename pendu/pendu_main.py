@@ -33,7 +33,9 @@ import classes.interface.display
 #   VARIABLES GLOBALES
 # ==================================================================================================
 
+# fichier de sauvegarde
 save_file = "save_file.txt"
+# fichier de conf
 conf_file = "pendu.conf"
 
 # ==================================================================================================
@@ -125,6 +127,10 @@ def hide_word(word):
     return mot
 
 
+def pick_random_word(list_word):
+    word = random.choice(list_word)
+    return word
+
 
 
 def affichage(objet, liste):
@@ -169,11 +175,11 @@ class interface_main(tk.Frame):
 
         self.main_display = classes.interface.display.display(parent, 0, 0, 30, 10, 20).get_text()
 
-        self.select_player_input = classes.interface.saisie.saisie(parent, 1, 1, "nom du joueur")
-        self.lettre_input = classes.interface.saisie.saisie(self.parent, 3, 2, "lettre")
+        self.select_player_input = classes.interface.saisie.saisie(parent, 0, 1, 20, 10, "nom du joueur")
+        self.lettre_input = classes.interface.saisie.saisie(self.parent, 2, 2, 2, 1, "lettre")
 
-        self.pendu_play_button = classes.interface.bouton.bouton(parent, 2, 1, "jouer", self.pendu_game)
-        self.lettre_button = classes.interface.bouton.bouton(self.parent, 3, 1, "valider lettre", self.get_letter)
+        self.pendu_play_button = classes.interface.bouton.bouton(parent, 1, 1, "jouer", self.pendu_game)
+        self.lettre_button = classes.interface.bouton.bouton(self.parent, 2, 1, "valider lettre", self.get_letter)
 
 
     def pendu_game(self):
@@ -183,7 +189,8 @@ class interface_main(tk.Frame):
     def get_letter(self):
         a = self.lettre_input.get_value()
         self.lettre.set_name(a)
-
+        self.hide()
+       
 
     def check_player(self):
         a = self.select_player_input.get_value()
@@ -223,6 +230,16 @@ class interface_main(tk.Frame):
             self.label_player.config(text=string)
             affichage(self.main_display, string)
 
+
+
+
+    def hide(self):
+        mot = pick_random_word(words_list)
+        self.mot.set_name(mot)
+        a = hide_word(self.mot.get_name())
+        self.mot_cache.set_name(a)
+        affichage(self.main_display, self.mot_cache.get_name())
+        
 #
 #   TO DO 
 #   fonction du pendu
@@ -247,6 +264,7 @@ root.title("Jeu du pendu")
 root.config(menu=menu)
 
 root.geometry("600x200")
+
 
 interface_main(root)
 

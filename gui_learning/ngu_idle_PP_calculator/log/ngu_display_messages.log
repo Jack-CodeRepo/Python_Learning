@@ -61,3 +61,5 @@
 2020-09-24 12:42:15,372 :: Fonction= calculer_temps :: message_02= Temps passé pour avoir 20000 PP: 2 days, 0:07:22 hh:mm:ss (290923 points)
 2020-09-24 12:42:46,071 :: Fonction= calculer_temps :: message_01= Temps passé pour avoir 1 PP: 0:00:09 hh:mm:ss (291000 points)
 2020-09-24 12:42:46,072 :: Fonction= calculer_temps :: message_02= Temps passé pour avoir 20000 PP: 2 days, 0:06:36 hh:mm:ss (291000 points)
+2020-09-25 08:35:59,907 :: Fonction= calculer_temps :: message_01= Temps passé pour avoir 1 PP: 0:00:09 hh:mm:ss (292565 points)
+2020-09-25 08:35:59,907 :: Fonction= calculer_temps :: message_02= Temps passé pour avoir 10000 PP: 23:55:35 hh:mm:ss (292565 points)

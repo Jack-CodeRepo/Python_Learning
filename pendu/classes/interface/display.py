@@ -38,7 +38,7 @@ class display(tk.Text):
         self.rowspan = rSpan
 
         self.boite_texte = tk.Text(parent, width=self.width, height=self.height, state=tk.DISABLED)
-        self.boite_texte.grid(row=self.xRow, column=self.yCol, rowspan=self.rowspan)
+        self.boite_texte.grid(row=self.xRow, column=self.yCol, rowspan=self.rowspan, sticky="nsew")
 
 
     def get_text(self):

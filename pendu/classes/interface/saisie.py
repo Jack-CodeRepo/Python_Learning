@@ -24,15 +24,17 @@ class saisie(tk.Entry):
         yCol: coordonnée y (vertical) de la zone de saisie
         label: nom de la zone saisie, positionne à gauche de la zone
     '''
-    def __init__(self, parent, xRow, yCol, label=None):
+    def __init__(self, parent, xRow, yCol, width, cSpan, label=None):
         tk.Entry.__init__(self)
         self.xRow = xRow
         self.yCol = yCol
+        self.width = width
+        self.cSpan = cSpan
         self.label = label
 
         # création zone de saisie (entry)
-        self.saisie = tk.Entry(parent, width=10)
-        self.saisie.grid(row=self.xRow, column=self.yCol+1)
+        self.saisie = tk.Entry(parent, width=self.width)
+        self.saisie.grid(row=self.xRow, column=self.yCol+1, columnspan=self.cSpan, sticky="nsew")
 
         # création du nom de la zone de saisie (label)
         self.saisie_label = tk.Label(parent, text=self.label)
