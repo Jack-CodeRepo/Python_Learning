@@ -246,20 +246,15 @@ class interface_main(tk.Frame):
         self.mot_cache = classes.elements.mot.class_mot()
         self.lettre = classes.elements.lettre.class_lettre()
 
-        self.label_player = tk.Label(parent)
-        self.label_player.grid(row=0, column=1, sticky='nsew')
-
         self.main_display = classes.interface.display.display(parent, 0, 0, 30, 10, 20).get_text()
-
         self.select_player_input = classes.interface.saisie.saisie(parent, 0, 1, 20, 10, "nom du joueur")
-        self.lettre_input = classes.interface.saisie.saisie(self.parent, 2, 2, 2, 1, "lettre")
-
         self.pendu_play_button = classes.interface.bouton.bouton(parent, 1, 1, "jouer", self.pendu_game)
-        self.lettre_button = classes.interface.bouton.bouton(self.parent, 2, 1, "valider lettre", self.get_letter)
 
 
     def pendu_game(self):
         self.check_player()
+        self.lettre_button = classes.interface.bouton.bouton(self.parent, 2, 1, "valider lettre", self.get_letter)
+        self.lettre_input = classes.interface.saisie.saisie(self.parent, 2, 2, 2, 1, "lettre")
 
 
     def get_letter(self):
@@ -270,7 +265,7 @@ class interface_main(tk.Frame):
 
     def check_player(self):
         a = self.select_player_input.get_value()
-        self.player.set_name(a)
+        self.player.set_name(str(a))
         nom_joueur = self.player.get_name()
 
         players = get_list_players()
@@ -286,24 +281,23 @@ class interface_main(tk.Frame):
                             s = get_score_from_save(nom_joueur)
                             self.player.set_score(s)
                             string = f"joueur: {self.player.get_name()} // score: {self.player.get_score()}"
-                            self.label_player.config(text=string)
+                            affichage(self.main_display, string)
                 else:
                     # si le joueur n'existe pas
                     self.player.set_name(nom_joueur)
                     self.player.set_score(10)
                     add_player(nom_joueur)
                     string = f"joueur: {self.player.get_name()} // score: {self.player.get_score()}"
-                    self.label_player.config(text=string)
+                    affichage(self.main_display, string)
             # si le fichier de sauvegarde est vide
             else:
                 self.player.set_name(nom_joueur)
                 self.player.set_score(10)
                 add_player(nom_joueur) 
                 string = f"joueur: {self.player.get_name()} // score: {self.player.get_score()}"
-                self.label_player.config(text=string)
+                affichage(self.main_display, string)
         else:
             string = "Renseignez un nom de joueur"
-            self.label_player.config(text=string)
             affichage(self.main_display, string)
 
 
@@ -320,7 +314,7 @@ class interface_main(tk.Frame):
 #   TO DO 
 #   fonction du pendu
 #
-#
+
 
 
 
