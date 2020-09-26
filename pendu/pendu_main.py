@@ -14,6 +14,8 @@ from tkinter import filedialog
 import configparser
 import os
 import random
+import time
+
 
 # import dictionnaire
 from words import words_list
@@ -187,7 +189,7 @@ def hide_word(word):
     mot = []
     mot_long = len(word)
     for i in range(mot_long):
-        mot.insert(i, "_ ")
+        mot.insert(i, "_")
     return mot
 
 
@@ -242,7 +244,7 @@ class interface_main(tk.Frame):
         self.parent = parent
 
         self.player = classes.elements.player.class_player()
-        self.mot = classes.elements.mot.class_mot()
+        self.mot = classes.elements.mot.class_mot(tentative=10)
         self.mot_cache = classes.elements.mot.class_mot()
         self.lettre = classes.elements.lettre.class_lettre()
 
@@ -253,6 +255,7 @@ class interface_main(tk.Frame):
 
     def pendu_game(self):
         self.check_player()
+        self.hide()
         self.lettre_button = classes.interface.bouton.bouton(self.parent, 2, 1, "valider lettre", self.get_letter)
         self.lettre_input = classes.interface.saisie.saisie(self.parent, 2, 2, 2, 1, "lettre")
 
@@ -260,7 +263,8 @@ class interface_main(tk.Frame):
     def get_letter(self):
         a = self.lettre_input.get_value()
         self.lettre.set_name(a)
-        self.hide()
+        time.sleep(1)
+        self.check_lettre()
        
 
     def check_player(self):
@@ -307,8 +311,44 @@ class interface_main(tk.Frame):
         mot = pick_random_word(words_list)
         self.mot.set_name(mot)
         a = hide_word(self.mot.get_name())
-        self.mot_cache.set_name(a)
-        affichage(self.main_display, self.mot_cache.get_name())
+        affichage(self.main_display, a)
+
+
+
+    def check_lettre(self):
+        l = self.lettre.get_name()
+        m = self.mot.get_name()
+        mc = self.mot_cache.get_name()
+        mc_list = []
+        mc_display_list = []
+
+        if not mc:
+            mc = hide_word(m)
+
+        for i in range(len(mc)):
+                if l == m[i]:
+                    mc_list.append(l)
+                elif mc[i].isalpha():
+                    mc_list.append(mc[i])
+                else:
+                    mc_list.append("_")
+
+        if l not in m:
+            self.mot.lower_tentative(1)
+
+        mc = "".join(mc_list)
+        self.mot_cache.set_name(mc)
+
+
+        for i in mc:
+            mc_display_list.append(i+" ")
+        
+        mc_display = "".join(mc_display_list)
+        string = f"{mc_display} \n Tentatives restantes: {self.mot.get_tentative()}"
+        affichage(self.main_display, string)
+        
+
+
         
 #
 #   TO DO 

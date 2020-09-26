@@ -16,7 +16,7 @@
 
 
 class class_mot():
-    def __init__(self, name: str = None, tentative: int = None):
+    def __init__(self, name: str = "", tentative: int = None):
         """
             class gérant le mot en tant qu'objet
 
