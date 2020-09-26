@@ -16,7 +16,16 @@
 
 
 class class_mot():
-    def __init__(self, name=None, tentative=None):
+    def __init__(self, name: str = None, tentative: int = None):
+        """
+            class gérant le mot en tant qu'objet
+
+            :param name: valeure du mot, defaults to None
+            :type name: str, optional
+            :param tentative: nombre de tentative pour trouver le mot, defaults to None
+            :type tentative: int, optional
+        """
+        
         self.name = name
         self.tentative = tentative
 

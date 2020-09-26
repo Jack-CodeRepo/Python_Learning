@@ -55,6 +55,16 @@ conf_file = "pendu.conf"
 # fonctions liées au fichier pendu.conf
 
 def modify_conf(section, option, value):
+    """
+        modifier la valeure d'une option du fichier pendu.conf
+
+        :param section: section de l'option ex: [FILES]
+        :type section: str
+        :param option: option à modifier ex: save_file
+        :type option: str
+        :param value: valeur de l'option à modifier
+        :type value: str
+    """
     config = configparser.ConfigParser()
     config.read(conf_file)
     config.set(section, option, value)
@@ -63,7 +73,18 @@ def modify_conf(section, option, value):
         config.write(configfile)
 
 
+
 def get_config_element(section, option):
+    """
+        recupere la valeure d'une option du fichier pendu.conf
+
+        :param section: section de l'option ex: [FILES]
+        :type section: str
+        :param option: option à modifier ex: save_file
+        :type option: str
+        :param value: valeur de l'option à modifier
+        :type value: str
+    """
     config = configparser.ConfigParser()
     config.read(conf_file)
     value = config.get(section, option)
@@ -74,6 +95,13 @@ def get_config_element(section, option):
 
 # fonctions liées à l'interface autre que le menu
 def add_player(name):
+    """
+        ajoute un joueur dans le fichier de sauvegarde
+
+        :param name: nom du joueur à ajouter
+        :type name: str
+    """
+
     check_empty_file = os.stat(save_file).st_size == 0
     name = name
     if check_empty_file:
@@ -86,6 +114,13 @@ def add_player(name):
 
 
 def get_list_players():
+    """
+        recupere la liste des joueurs enregistré dans le fichier de sauvegarde
+
+        :return: liste des joueurs
+        :rtype: list
+    """
+
     with open(save_file, 'r') as fichier:
         lignes = fichier.readlines()
         joueur = []
@@ -95,7 +130,17 @@ def get_list_players():
     return joueur
 
 
+
 def get_score_from_save(name):
+    """
+        récupere le score du joueur à partir du fichier de sauvegarde
+
+        :param name: nom du joueur
+        :type name: str
+        :return: score du joueur
+        :rtype: int
+    """
+
     with open(save_file, 'r') as fichier:
         lignes = fichier.readlines()
         for l in lignes:
@@ -105,7 +150,17 @@ def get_score_from_save(name):
                 return score
 
 
+
 def write_player_score(name, score):
+    """
+        ecris le score du joueur dans le fichier de sauvegarde
+
+        :param name: nom du joueur
+        :type name: str
+        :param score: score du joueur a ecrire
+        :type score: int
+    """
+
     with open(save_file, 'w') as fichier:
         lignes = fichier.readlines()
         nb_lignes = len(lignes)
@@ -119,7 +174,16 @@ def write_player_score(name, score):
                     fichier.writelines(lignes)
 
 
+
 def hide_word(word):
+    """
+        remplace chaque charactere d'une sting par "_ "
+
+        :param word: string à transformer
+        :type word: str
+        :return: string transformée
+        :rtype: str
+    """
     mot = []
     mot_long = len(word)
     for i in range(mot_long):
@@ -127,20 +191,32 @@ def hide_word(word):
     return mot
 
 
+
 def pick_random_word(list_word):
+    """
+        choisi un mot aléatoire à partir d'une liste de string, et le renvois
+
+        :param list_word: liste de mot
+        :type list_word: list
+        :return: list de mot
+        :rtype: string
+    """
+
     word = random.choice(list_word)
-    return word
+    return str(word)
 
 
 
 def affichage(objet, liste):
-    '''
+    """
         affiche les éléments
-        Arguments:
-        objet: objet gérant endroit où afficher (l'objet doit etre créé avec la classe display)
-        liste: liste des éléments à afficher
 
-    '''
+        :param  objet: objet gérant l'endroit où afficher (l'objet doit etre créé avec la classe display)
+        :type   objet: tkinter.Text
+        :param  liste: liste des éléments à afficher
+        :type   liste: list || autres
+    """
+
     if type(liste) is list:
         objet.config(state=tk.NORMAL, font="Calibri")
         objet.delete('1.0', tk.END)

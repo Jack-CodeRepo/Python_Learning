@@ -53,15 +53,11 @@ def quitter():
 # ==================================================================================================
 
 class class_menu_bar(tk.Menu):
-    '''
-        type: class
-        Gere la barre de menu
-
-        Arguments:
-        parent: fenetre parente (main window)
-
-    '''
     def __init__(self):
+        """
+            Gere la barre de menu
+        """
+        
         tk.Menu.__init__(self)
 
         menu_Fichier = tk.Menu(self, tearoff=0)

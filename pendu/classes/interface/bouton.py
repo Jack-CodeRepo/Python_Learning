@@ -15,18 +15,22 @@ import tkinter as tk
 
 
 class bouton(tk.Button):
-    '''
-        type: class
-        Gere la zone d'affichage
-
-        Arguments:
-        xRow: coordonnée x (horizontal) de la zone d'affichage
-        yCol: coordonnée y (vertical) de la zone d'affichage
-        titre: nom du bouton
-        cmd: fonction à associer au bouton
-
-    '''
     def __init__(self, parent, xRow, yCol, titre, cmd):
+        """
+            Gere la zone d'affichage
+
+            :param parent: fenetre dans laquelle afficher le bouton
+            :type parent: 
+            :param xRow: coordonnée x (horizontal) de la zone d'affichage
+            :type xRow: int
+            :param yCol: coordonnée y (vertical) de la zone d'affichage
+            :type yCol: int
+            :param titre: nom du bouton
+            :type titre: str
+            :param cmd: fonction à associer au bouton
+            :type cmd: 
+        """
+
         tk.Button.__init__(self)
         self.xRow = xRow
         self.yCol = yCol

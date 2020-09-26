@@ -18,18 +18,23 @@ import tkinter as tk
 
 
 class display(tk.Text):
-    '''
-        type: class
-        Gere la zone d'affichage
-
-        Arguments:
-        xRow: coordonnée x (horizontal) de la zone d'affichage
-        yCol: coordonnée y (vertical) de la zone d'affichage
-        w: largeur de la zone d'affichage
-        h: hauteur de la zone d'affichage
-
-    '''
     def __init__(self, parent, xRow, yCol, w, h, rSpan):
+        """
+             Gere la zone d'affichage
+            :param parent: fenetre dans laquelle afficher le bouton
+            :type parent: [type]
+            :param xRow: coordonnée x (horizontal) de la zone d'affichage
+            :type xRow: int
+            :param yCol: coordonnée y (vertical) de la zone d'affichage
+            :type yCol: int
+            :param w: largeur de la zone d'affichage
+            :type w: int
+            :param h: hauteur de la zone d'affichage
+            :type h: int
+            :param rSpan: nombre de row sur lequel la zone s'affiche
+            :type rSpan: int
+        """
+
         tk.Text.__init__(self)
         self.xRow = xRow
         self.yCol = yCol
