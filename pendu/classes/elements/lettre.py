@@ -17,6 +17,13 @@
 
 class class_lettre():
     def __init__(self, lettre=None):
+        """
+            class gérant la lettre en tant qu'objet
+
+            :param lettre: valeure de la lettre, defaults to None
+            :type lettre: str, optional
+        """
+        
         self.lettre = lettre
 
     def get_name(self):

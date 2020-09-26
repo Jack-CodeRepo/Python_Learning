@@ -3,6 +3,7 @@ import random
 
 word = "coucou"
 
-print(word[0])
+for i in range(len(word)):
+    print(i)
 
-word[1] = "a"
+

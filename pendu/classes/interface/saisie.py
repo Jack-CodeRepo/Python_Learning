@@ -15,16 +15,24 @@ import tkinter as tk
 
 
 class saisie(tk.Entry):
-    '''
-        type: class
-        Gere les zone de saisie
-
-        Arguments:
-        xRow: coordonnée x (horizontal) de la zone de saisie
-        yCol: coordonnée y (vertical) de la zone de saisie
-        label: nom de la zone saisie, positionne à gauche de la zone
-    '''
     def __init__(self, parent, xRow, yCol, width, cSpan, label=None):
+        """
+            Gere les zone de saisie
+
+            :param parent: fenetre dans laquelle afficher le bouton
+            :type parent: [type]
+            :param xRow: coordonnée x (horizontal) de la zone de saisie
+            :type xRow: int
+            :param yCol: coordonnée y (vertical) de la zone de saisie
+            :type yCol: int
+            :param width: largeur de la zone de saisie
+            :type width: int
+            :param cSpan: nombre de column sur lequel la zone s'affiche
+            :type cSpan: int
+            :param label: nom de la zone saisie, positionne à gauche de la zone
+            :type label: str, optional
+        """
+        
         tk.Entry.__init__(self)
         self.xRow = xRow
         self.yCol = yCol
