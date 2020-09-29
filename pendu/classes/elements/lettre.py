@@ -31,4 +31,4 @@ class class_lettre():
 
 
     def set_name(self, value):
-        self.lettre = value
+        self.lettre = str(value)

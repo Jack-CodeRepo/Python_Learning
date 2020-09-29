@@ -153,7 +153,7 @@ def get_score_from_save(name):
 
 
 
-def write_player_score(name, score):
+def write_player_score(name: str, score:int):
     """
         ecris le score du joueur dans le fichier de sauvegarde
 
@@ -163,17 +163,55 @@ def write_player_score(name, score):
         :type score: int
     """
 
-    with open(save_file, 'w') as fichier:
-        lignes = fichier.readlines()
-        nb_lignes = len(lignes)
-        for i in nb_lignes:
-            index = i
-            for l in lignes:
-                nom_joueur = l.split("=")[0]
-                score = l.split("=")[1]
-                if name == nom_joueur:
-                    lignes[index] = f"{nom_joueur}={score}"
-                    fichier.writelines(lignes)
+    fichier = open(save_file, 'r')
+    lignes = fichier.readlines()
+    fichier.close()
+
+    list_player = get_list_players()
+    for l in lignes:
+        if name in list_player:
+            n = l.split("=")[0]
+            s = l.split("=")[1]
+            index = list_player.index(n)
+            fichier = open(save_file, 'w')
+
+            if name == n :
+                lignes[index] = f"{name}={score}\n"
+            
+            else:
+                lignes[index] = f"{n}={s}"
+
+            fichier.writelines(lignes)
+            fichier.close()
+
+
+
+def delete_player(name):
+
+    fichier = open(save_file, 'r')
+    lignes = fichier.readlines()
+    fichier.close()
+    
+    list_player = get_list_players()
+    for l in lignes:
+        if name in list_player:
+            n = l.split("=")[0]
+            s = l.split("=")[1]
+            index = list_player.index(n)
+            fichier = open(save_file, 'w')
+
+            if name == n :
+                lignes[index] = ""
+            
+            else:
+                lignes[index] = f"{n}={s}"
+
+            fichier.writelines(lignes)
+            fichier.close()
+
+
+
+
 
 
 
@@ -244,7 +282,7 @@ class interface_main(tk.Frame):
         self.parent = parent
 
         self.player = classes.elements.player.class_player()
-        self.mot = classes.elements.mot.class_mot(tentative=10)
+        self.mot = classes.elements.mot.class_mot()
         self.mot_cache = classes.elements.mot.class_mot()
         self.lettre = classes.elements.lettre.class_lettre()
 
@@ -254,10 +292,14 @@ class interface_main(tk.Frame):
 
 
     def pendu_game(self):
+        mot = pick_random_word(words_list)
+        self.mot.set_name(mot)
+        self.mot.set_tentative(4)
+        self.mot_cache.set_name("")
         self.check_player()
-        self.hide()
         self.lettre_button = classes.interface.bouton.bouton(self.parent, 2, 1, "valider lettre", self.get_letter)
         self.lettre_input = classes.interface.saisie.saisie(self.parent, 2, 2, 2, 1, "lettre")
+        self.hide()
 
 
     def get_letter(self):
@@ -265,17 +307,18 @@ class interface_main(tk.Frame):
         self.lettre.set_name(a)
         time.sleep(1)
         self.check_lettre()
-       
+        self.check_score()
+
+
 
     def check_player(self):
-        a = self.select_player_input.get_value()
-        self.player.set_name(str(a))
+        a = str(self.select_player_input.get_value()).upper()
+        self.player.set_name(a)
         nom_joueur = self.player.get_name()
 
         players = get_list_players()
 
         if a:
-            nom_joueur = nom_joueur.upper()
             if players:
                 if nom_joueur in players:
                     # si le joueur existe
@@ -308,8 +351,6 @@ class interface_main(tk.Frame):
 
 
     def hide(self):
-        mot = pick_random_word(words_list)
-        self.mot.set_name(mot)
         a = hide_word(self.mot.get_name())
         affichage(self.main_display, a)
 
@@ -326,12 +367,12 @@ class interface_main(tk.Frame):
             mc = hide_word(m)
 
         for i in range(len(mc)):
-                if l == m[i]:
-                    mc_list.append(l)
-                elif mc[i].isalpha():
-                    mc_list.append(mc[i])
-                else:
-                    mc_list.append("_")
+            if l == m[i]:
+                mc_list.append(l)
+            elif mc[i].isalpha():
+                mc_list.append(mc[i])
+            else:
+                mc_list.append("_")
 
         if l not in m:
             self.mot.lower_tentative(1)
@@ -346,7 +387,44 @@ class interface_main(tk.Frame):
         mc_display = "".join(mc_display_list)
         string = f"{mc_display} \n Tentatives restantes: {self.mot.get_tentative()}"
         affichage(self.main_display, string)
-        
+
+
+
+
+    def check_score(self):
+        t = self.mot.get_tentative()
+        string = ""
+        print("CHECK_SCORE")
+        if "_" not in self.mot_cache.get_name():
+            print("no more _ in mot_cache")
+            self.player.increase_score(5)
+            write_player_score(str(self.player.get_name()), int(self.player.get_score()))
+            string = f"Félicitations! Vous avez gagné! Votre score est de {self.player.get_score()}"
+            affichage(self.main_display, string)
+
+        else:
+            if t == 0:
+
+                self.player.lower_score(5)
+                self.lettre_button.forget_button()
+                self.lettre_input.forget_saisie()
+
+                write_player_score(str(self.player.get_name()), int(self.player.get_score()))
+                string = f"Il vous reste {t} tentative, vous avez perdu"
+                affichage(self.main_display, string)
+
+        if self.player.get_score() == 0:
+            delete_player(self.player.get_name())
+            string = f"Vous avez {self.player.get_score()} en score. \n Votre sauvegarde a été supprimée."
+            affichage(self.main_display, string)
+
+
+
+
+
+
+
+
 
 
 
