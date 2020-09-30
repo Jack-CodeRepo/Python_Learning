@@ -17,7 +17,7 @@ import random
 import time
 
 
-# import dictionnaire
+# import liste
 from lists import words
 
 # import des éléments modifiables
