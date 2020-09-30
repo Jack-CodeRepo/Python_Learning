@@ -18,7 +18,7 @@ import time
 
 
 # import dictionnaire
-from words import words_list
+from lists import words
 
 # import des éléments modifiables
 import classes.elements.player
@@ -36,9 +36,11 @@ import classes.interface.display
 # ==================================================================================================
 
 # fichier de sauvegarde
-save_file = "save_file.txt"
+save_file = "misc/save_file.txt"
 # fichier de conf
-conf_file = "pendu.conf"
+conf_file = "misc/pendu.conf"
+# attribution de la liste des mots à deviner en variable
+words_list = words.MHW
 
 # ==================================================================================================
 #   DICT
@@ -187,7 +189,12 @@ def write_player_score(name: str, score:int):
 
 
 def delete_player(name):
+    """
+        supprime un joueur
 
+        :param name: nom du joueur à supprimer
+        :type name: str
+    """
     fichier = open(save_file, 'r')
     lignes = fichier.readlines()
     fichier.close()
@@ -294,7 +301,7 @@ class interface_main(tk.Frame):
     def pendu_game(self):
         mot = pick_random_word(words_list)
         self.mot.set_name(mot)
-        self.mot.set_tentative(4)
+        self.mot.set_tentative(9)
         self.mot_cache.set_name("")
         self.check_player()
         self.lettre_button = classes.interface.bouton.bouton(self.parent, 2, 1, "valider lettre", self.get_letter)
@@ -371,6 +378,8 @@ class interface_main(tk.Frame):
                 mc_list.append(l)
             elif mc[i].isalpha():
                 mc_list.append(mc[i])
+            elif mc[i] == "-":
+                mc_list.append("-")
             else:
                 mc_list.append("_")
 

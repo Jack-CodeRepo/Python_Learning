@@ -61,3 +61,4 @@ class saisie(tk.Entry):
 
     def forget_saisie(self):
         self.saisie.grid_forget()
+        self.saisie_label.grid_forget()
