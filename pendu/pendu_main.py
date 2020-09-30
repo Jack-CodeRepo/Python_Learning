@@ -417,6 +417,7 @@ class interface_main(tk.Frame):
 
                 self.player.lower_score(5)
                 self.lettre_button.forget_button()
+                self.lettre_input.forget_saisie_label()
                 self.lettre_input.forget_saisie()
 
                 write_player_score(str(self.player.get_name()), int(self.player.get_score()))
