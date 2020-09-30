@@ -40,7 +40,7 @@ save_file = "misc/save_file.txt"
 # fichier de conf
 conf_file = "misc/pendu.conf"
 # attribution de la liste des mots à deviner en variable
-words_list = words.MHW
+words_list = words.MHWI
 
 # ==================================================================================================
 #   DICT
@@ -299,7 +299,7 @@ class interface_main(tk.Frame):
 
 
     def pendu_game(self):
-        mot = pick_random_word(words_list)
+        mot = pick_random_word(words_list).upper()
         self.mot.set_name(mot)
         self.mot.set_tentative(9)
         self.mot_cache.set_name("")
@@ -311,6 +311,7 @@ class interface_main(tk.Frame):
 
     def get_letter(self):
         a = self.lettre_input.get_value()
+        a = str(a).upper()
         self.lettre.set_name(a)
         time.sleep(1)
         self.check_lettre()
