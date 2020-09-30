@@ -37,3 +37,6 @@ class bouton(tk.Button):
 
         self.bouton = tk.Button(parent, text=titre, height=1, width=15, command=cmd)
         self.bouton.grid(row=self.xRow, column=self.yCol, sticky ="nsew")
+    
+    def forget_button(self):
+        self.bouton.grid_forget()

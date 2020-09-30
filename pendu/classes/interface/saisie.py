@@ -58,3 +58,7 @@ class saisie(tk.Entry):
             return False
         else:
             return self.saisie.get()
+
+    def forget_saisie(self):
+        self.saisie.grid_forget()
+        self.saisie_label.grid_forget()

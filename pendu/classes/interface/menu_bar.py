@@ -61,7 +61,7 @@ class class_menu_bar(tk.Menu):
         tk.Menu.__init__(self)
 
         menu_Fichier = tk.Menu(self, tearoff=0)
-        menu_Fichier.add_command(label="Nouveau (inexistant")
+        menu_Fichier.add_command(label="Nouveau (inexistant)")
         # menu_Fichier.add_command(label="Créer une sauvegarde", command=create_save_file)
         # menu_Fichier.add_command(label="Ouvrir sauvegarde", command=open_save_file)
         menu_Fichier.add_separator()

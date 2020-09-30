@@ -39,7 +39,7 @@ class class_mot():
         self.name = value
 
     def set_tentative(self, value):
-        self.tentative = value
+        self.tentative = int(value)
 
     def lower_tentative(self, value):
-        self.tentative = self.get_tentative() - value
+        self.tentative = int(self.get_tentative()) - int(value)

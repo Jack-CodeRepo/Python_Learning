@@ -40,3 +40,9 @@ class class_player():
 
     def set_score(self, value):
         self.score = value
+
+    def lower_score(self, value):
+        self.score = int(self.get_score()) - int(value)
+
+    def increase_score(self, value):
+        self.score = int(self.get_score()) + int(value)
