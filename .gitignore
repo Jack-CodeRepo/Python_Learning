@@ -12,7 +12,7 @@
 *.pyproj
 *.sln
 *.vs/
-*.log
+**/*.log
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
