@@ -17,7 +17,7 @@ import random
 import time
 
 
-# import dictionnaire
+# import liste
 from lists import words
 
 # import des éléments modifiables
@@ -40,7 +40,7 @@ save_file = "misc/save_file.txt"
 # fichier de conf
 conf_file = "misc/pendu.conf"
 # attribution de la liste des mots à deviner en variable
-words_list = words.MHW
+words_list = words.MHWI
 
 # ==================================================================================================
 #   DICT
@@ -178,7 +178,7 @@ def write_player_score(name: str, score:int):
             fichier = open(save_file, 'w')
 
             if name == n :
-                lignes[index] = f"{name}={score}\n"
+                lignes[index] = f"{name}={score}"
             
             else:
                 lignes[index] = f"{n}={s}"
@@ -299,7 +299,7 @@ class interface_main(tk.Frame):
 
 
     def pendu_game(self):
-        mot = pick_random_word(words_list)
+        mot = pick_random_word(words_list).upper()
         self.mot.set_name(mot)
         self.mot.set_tentative(9)
         self.mot_cache.set_name("")
@@ -311,6 +311,7 @@ class interface_main(tk.Frame):
 
     def get_letter(self):
         a = self.lettre_input.get_value()
+        a = str(a).upper()
         self.lettre.set_name(a)
         time.sleep(1)
         self.check_lettre()
@@ -403,19 +404,20 @@ class interface_main(tk.Frame):
     def check_score(self):
         t = self.mot.get_tentative()
         string = ""
-        print("CHECK_SCORE")
         if "_" not in self.mot_cache.get_name():
-            print("no more _ in mot_cache")
             self.player.increase_score(5)
             write_player_score(str(self.player.get_name()), int(self.player.get_score()))
             string = f"Félicitations! Vous avez gagné! Votre score est de {self.player.get_score()}"
             affichage(self.main_display, string)
+            self.lettre_button.forget_button()
+            self.lettre_input.forget_saisie_label()
+            self.lettre_input.forget_saisie()
 
         else:
             if t == 0:
-
                 self.player.lower_score(5)
                 self.lettre_button.forget_button()
+                self.lettre_input.forget_saisie_label()
                 self.lettre_input.forget_saisie()
 
                 write_player_score(str(self.player.get_name()), int(self.player.get_score()))
@@ -426,7 +428,9 @@ class interface_main(tk.Frame):
             delete_player(self.player.get_name())
             string = f"Vous avez {self.player.get_score()} en score. \n Votre sauvegarde a été supprimée."
             affichage(self.main_display, string)
-
+            self.lettre_button.forget_button()
+            self.lettre_input.forget_saisie_label()
+            self.lettre_input.forget_saisie()
 
 
 
