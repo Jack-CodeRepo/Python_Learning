@@ -35,6 +35,13 @@ column_index = {"numero":0, "type_voie":1, "nom_voie":2,
 # ==================================================================================================
 
 def get_file():
+    """
+    Ouvre le fichier csv_test.csv en mode lecture
+    Le fichier est spécifié en variable globale
+
+    :return: le contenu du fichier
+    :rtype: list
+    """
     f = open(source_file, "r")
     lignes = f.readlines()
     f.close()
@@ -44,6 +51,12 @@ def get_file():
 
 
 def output_column_name(fichier):
+    """
+    Affiche le nom et le numero de la colonne
+
+    :param fichier: contenu du fichier
+    :type fichier: list
+    """
     n = 1
     for name in fichier[0].split(";"):
         print(f"Le nom de la colonne {n} est: {name}")
@@ -51,7 +64,17 @@ def output_column_name(fichier):
 
 
 
-def get_line_containing_value(fichier, column, value: str):
+def get_line_containing_value(fichier, column: str, value: str):
+    """
+    Permet de chercher une valeure (string) spécifiée dans une colonne spécifiée (nom de colonne)
+
+    :param fichier: contenu du fichier
+    :type fichier: list
+    :param column: nom de la colonne ciblée pour la recherche
+    :type column: str
+    :param value: valeur recherchée
+    :type value: str
+    """
 
     index = _get_index_from_column_name(fichier, column)
     column_number = index + 1
@@ -73,6 +96,16 @@ def get_line_containing_value(fichier, column, value: str):
 
 
 def _get_index_from_column_name(fichier, column):
+    """
+    recupere le numéro d'index par rapport au nom de la colonne
+
+    :param fichier: contenu du fichier
+    :type fichier: list
+    :param column: nom de la colonne ciblée pour la recherche
+    :type column: str
+    :return: numéro d'index
+    :rtype: int
+    """
     line_01 = fichier[0].split(";")
     index = 0
     for c in line_01:
@@ -82,6 +115,14 @@ def _get_index_from_column_name(fichier, column):
 
 
 def input_to_search(v):
+    """
+    lance une invite de saisie
+
+    :param v: nom générique de la valeur cherchée pour l'afficher dans le terminal
+    :type v: string
+    :return: la valeur saisie
+    :rtype: string
+    """
     value = input(f"Type the {v} to be searched: ")
     return value
 
@@ -103,6 +144,4 @@ if __name__ == "__main__":
     fileSource = get_file()
     output_column_name(fileSource)
     get_line_containing_value(fileSource, column , value)
-
-
 
