@@ -1,0 +1,11 @@
+n°;type_voie;nom_voie;code_postal;nom_ville;num_dept;nom_dept;region;pays
+10;rue;jean bon;32641;aa;1;creuse;trou;chaipa
+14;boulevard;marboeuf;44152;be;2;loire;pasloin;chaipa
+26;avenue;raoult;56520;ce;3;petit;proche;chaipa
+3;impasse;macron;23146;de;4;boulet;inconnu;chaipa
+4;impasse;veran;29874;eu;1;creuse;trou;chaipa
+98;rue;taap;52525;ef;5;rhone;enedis;chaipa
+54;mail;amsterdam;35698;ge;6;hollande;europe;acote
+10;rue;chirac;39872;ache;7;correze;autretrou;chaipa
+50;allée;peronne;12244;i;1;creuse;trou;chaipa
+20;avenue;coronavirus;13250;ji;6;hollande;europe;acote

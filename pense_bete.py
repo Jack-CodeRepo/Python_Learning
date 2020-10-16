@@ -108,17 +108,29 @@ class my_classProp_de_qui_heriter:
     def atr01(self):
         return self.__atr01
 
+    @atr01.setter
+    def atr01(self, value):
+        self.__atr01 = value
+
     @property
     def atr02(self):
         return self.__atr02
+
+    @atr02.setter
+    def atr02(self, value):
+        self.__atr02 = value
 
     @property
     def atr03(self):
         return self.__atr03
 
+    @atr03.setter
+    def atr03(self, value):
+        self.__atr03 = value
 
 
-# la classe "teacher" hérite des attributs et méthodes de la class "person"
+
+# la classe "my_classProp_qui_herite" hérite des attributs et méthodes de la class "my_classProp_de_qui_heriter"
 class my_classProp_qui_herite(my_classProp_de_qui_heriter):
     def __init__(self, atr01, atr02, atr03, lol01, lol02):
         super().__init__(atr01, atr02, atr03)
@@ -135,10 +147,10 @@ class my_classProp_qui_herite(my_classProp_de_qui_heriter):
 
     # setter de lol01
     @lol01.setter
-    def lol01(self, lol01):
-        self.__lol01 = lol01
+    def lol01(self, value):
+        self.__lol01 = value
 
     # setter de lol02
     @lol02.setter
-    def lol02(self, lol02):
-        self.__lol02 = lol02
+    def lol02(self, value):
+        self.__lol02 = value
