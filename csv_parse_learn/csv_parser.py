@@ -5,13 +5,20 @@
 # ==================================================================================================
 #   IMPORT
 # ==================================================================================================
+
 import csv
+import sys
+import os
 
 # ==================================================================================================
 #   VARIABLES GLOBALES
 # ==================================================================================================
 
-source_file = "csv_test.csv"
+# source_file = "csv_test.csv"
+
+source_file = sys.argv[1]
+
+output_file = "output.csv"
 
 
 # ==================================================================================================
@@ -34,7 +41,7 @@ column_index = {"numero":0, "type_voie":1, "nom_voie":2,
 #   FONCTIONS
 # ==================================================================================================
 
-def get_file():
+def get_file(fichier):
     """
     Ouvre le fichier csv_test.csv en mode lecture
     Le fichier est spécifié en variable globale
@@ -42,7 +49,7 @@ def get_file():
     :return: le contenu du fichier
     :rtype: list
     """
-    f = open(source_file, "r")
+    f = open(fichier, "r")
     lignes = f.readlines()
     f.close()
 
@@ -86,7 +93,9 @@ def get_line_containing_value(fichier, column: str, value: str):
             # verifie que l'index de controle correspond à l'index de la colonne ciblée
             if i == index:
                 if value in col:
-                    print(f"valeur \"{value}\" trouvee dans {line} à l'index {index}. \nLe numero de colonne est {column_number}")
+                    print(f"valeur \"{value}\" trouvee dans {line} à l'index {index}. \nLe numero de colonne est {column_number}.\n")
+                    write_in_file(line, output_file)
+            
             i += 1
 
             # reset de l'index de controle si la boucle arrive à la derniere colonne
@@ -127,6 +136,13 @@ def input_to_search(v):
     return value
 
 
+def write_in_file(line, fichier):
+    if os.path.isfile(fichier):
+        with open(fichier, "a+") as f:
+            f.write(line)
+    else:
+        with open(fichier, "w+") as f:
+            f.write(line)
 
 # ==================================================================================================
 #   CLASSES
@@ -139,9 +155,13 @@ def input_to_search(v):
 
 if __name__ == "__main__":
 
+    fileSource = get_file(source_file)
+    output_column_name(fileSource)
+    input()
+    
     value = input_to_search("value")
     column = input_to_search("column")
-    fileSource = get_file()
-    output_column_name(fileSource)
+    input()
+    
     get_line_containing_value(fileSource, column , value)
 
