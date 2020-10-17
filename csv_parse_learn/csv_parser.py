@@ -49,11 +49,54 @@ def get_file(fichier):
     :return: le contenu du fichier
     :rtype: list
     """
+
     f = open(fichier, "r")
     lignes = f.readlines()
     f.close()
 
     return lignes
+
+
+
+
+
+def _get_index_from_column_name(fichier, column):
+    """
+    recupere le numéro d'index par rapport au nom de la colonne
+
+    :param fichier: contenu du fichier
+    :type fichier: list
+    :param column: nom de la colonne ciblée pour la recherche
+    :type column: str
+    :return: numéro d'index
+    :rtype: int
+    """
+
+    line_01 = fichier[0].split(";")
+    index = 0
+    for c in line_01:
+        if column in c:
+            return index
+        index += 1
+
+
+
+
+
+def input_to_search(v):
+    """
+    lance une invite de saisie
+
+    :param v: nom générique de la valeur cherchée pour l'afficher dans le terminal
+    :type v: string
+    :return: la valeur saisie
+    :rtype: string
+    """
+
+    value = input(f"Type the {v} to be searched: ")
+    return value
+
+
 
 
 
@@ -64,10 +107,13 @@ def output_column_name(fichier):
     :param fichier: contenu du fichier
     :type fichier: list
     """
+
     n = 1
     for name in fichier[0].split(";"):
         print(f"Le nom de la colonne {n} est: {name}")
         n += 1
+
+
 
 
 
@@ -94,7 +140,7 @@ def get_line_containing_value(fichier, column: str, value: str):
             if i == index:
                 if value in col:
                     print(f"valeur \"{value}\" trouvee dans {line} à l'index {index}. \nLe numero de colonne est {column_number}.\n")
-                    write_in_file(line, output_file)
+                    write_line_in_file(line, output_file)
             
             i += 1
 
@@ -104,45 +150,28 @@ def get_line_containing_value(fichier, column: str, value: str):
 
 
 
-def _get_index_from_column_name(fichier, column):
+
+
+def write_line_in_file(line, fichier):
     """
-    recupere le numéro d'index par rapport au nom de la colonne
+    ecrire une ligne dans un fichier
 
-    :param fichier: contenu du fichier
-    :type fichier: list
-    :param column: nom de la colonne ciblée pour la recherche
-    :type column: str
-    :return: numéro d'index
-    :rtype: int
+    :param line: ligne à écrire
+    :type line: string
+    :param fichier: fichier dans lequel ecrire
+    :type fichier: string
     """
-    line_01 = fichier[0].split(";")
-    index = 0
-    for c in line_01:
-        if column in c:
-            return index
-        index += 1
 
-
-def input_to_search(v):
-    """
-    lance une invite de saisie
-
-    :param v: nom générique de la valeur cherchée pour l'afficher dans le terminal
-    :type v: string
-    :return: la valeur saisie
-    :rtype: string
-    """
-    value = input(f"Type the {v} to be searched: ")
-    return value
-
-
-def write_in_file(line, fichier):
     if os.path.isfile(fichier):
         with open(fichier, "a+") as f:
             f.write(line)
     else:
         with open(fichier, "w+") as f:
             f.write(line)
+
+
+
+
 
 # ==================================================================================================
 #   CLASSES
