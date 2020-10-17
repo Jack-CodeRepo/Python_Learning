@@ -44,10 +44,16 @@ column_index = {"numero":0, "type_voie":1, "nom_voie":2,
 def get_file(fichier):
     """
     Ouvre le fichier csv_test.csv en mode lecture
-    Le fichier est spécifié en variable globale
 
-    :return: le contenu du fichier
-    :rtype: list
+    Parameters
+    ----------
+    fichier :
+        Le fichier à ouvrir.
+
+    Returns
+    -------
+    str
+        le contenu du fichier
     """
 
     f = open(fichier, "r")
@@ -60,16 +66,21 @@ def get_file(fichier):
 
 
 
-def _get_index_from_column_name(fichier, column):
+def _get_index_from_column_name(fichier, column: str):
     """
     recupere le numéro d'index par rapport au nom de la colonne
 
-    :param fichier: contenu du fichier
-    :type fichier: list
-    :param column: nom de la colonne ciblée pour la recherche
-    :type column: str
-    :return: numéro d'index
-    :rtype: int
+    Parameters
+    ----------
+    fichier : list
+        contenu du fichier
+    column : str
+        nom de la colonne ciblée pour la recherche
+
+    Returns
+    -------
+    int
+        numéro d'index
     """
 
     line_01 = fichier[0].split(";")
@@ -87,10 +98,15 @@ def input_to_search(v):
     """
     lance une invite de saisie
 
-    :param v: nom générique de la valeur cherchée pour l'afficher dans le terminal
-    :type v: string
-    :return: la valeur saisie
-    :rtype: string
+    Parameters
+    ----------
+    v : str
+        nom générique de la valeur cherchée pour l'afficher dans le terminal
+
+    Returns
+    -------
+    str
+        la valeur saisie
     """
 
     value = input(f"Type the {v} to be searched: ")
@@ -104,8 +120,10 @@ def output_column_name(fichier):
     """
     Affiche le nom et le numero de la colonne
 
-    :param fichier: contenu du fichier
-    :type fichier: list
+    Parameters
+    ----------
+    fichier : list
+        contenu du fichier
     """
 
     n = 1
@@ -119,14 +137,16 @@ def output_column_name(fichier):
 
 def get_line_containing_value(fichier, column: str, value: str):
     """
-    Permet de chercher une valeure (string) spécifiée dans une colonne spécifiée (nom de colonne)
-
-    :param fichier: contenu du fichier
-    :type fichier: list
-    :param column: nom de la colonne ciblée pour la recherche
-    :type column: str
-    :param value: valeur recherchée
-    :type value: str
+    Permet de chercher une valeure (str) spécifiée dans une colonne spécifiée (nom de colonne)
+    
+    Parameters
+    ----------
+    fichier : list
+        contenu du fichier
+    column : str
+        nom de la colonne ciblée pour la recherche
+    value : str
+        valeur recherchée
     """
 
     index = _get_index_from_column_name(fichier, column)
@@ -139,7 +159,7 @@ def get_line_containing_value(fichier, column: str, value: str):
             # verifie que l'index de controle correspond à l'index de la colonne ciblée
             if i == index:
                 if value in col:
-                    print(f"valeur \"{value}\" trouvee dans {line} à l'index {index}. \nLe numero de colonne est {column_number}.\n")
+                    print(f"valeur \"{value}\" trouvee dans:\n {line}L'index est: {index}.\nLe numero de colonne est {column_number}.\n")
                     write_line_in_file(line, output_file)
             
             i += 1
@@ -156,10 +176,12 @@ def write_line_in_file(line, fichier):
     """
     ecrire une ligne dans un fichier
 
-    :param line: ligne à écrire
-    :type line: string
-    :param fichier: fichier dans lequel ecrire
-    :type fichier: string
+    Parameters
+    ----------
+    line : str
+        ligne à écrire
+    fichier : str
+        fichier dans lequel ecrire
     """
 
     if os.path.isfile(fichier):
@@ -181,6 +203,7 @@ def write_line_in_file(line, fichier):
 # ==================================================================================================
 #   SCRIPT
 # ==================================================================================================
+
 
 if __name__ == "__main__":
 

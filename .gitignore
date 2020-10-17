@@ -12,6 +12,7 @@
 *.pyproj
 *.sln
 *.vs/
+*.vscode
 
 # data storage file
 *.csv
