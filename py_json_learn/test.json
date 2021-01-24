@@ -1,0 +1,75 @@
+{
+   "lists": 
+   {
+      "meta":
+      {
+         "name": "test.json",
+         "version": "1"
+      },
+      "ressources":
+      [
+         {
+            "id":{
+               "id":"01"
+            },
+            "core":
+            {
+               "theme": "language",
+               "edition": "latest",
+               "titre": "Python, c'est la vie.",
+               "author": "SamEtMax"
+            }
+         },
+         {
+            "id":{
+               "id":"01"
+            },
+            "core":
+            {
+               "theme": "testing",
+               "edition": "premiere",
+               "titre": "Git > BitKeeper.",
+               "author": "Linus Torvalds"
+            }
+         },
+         {
+            "id":{
+               "id":"01"
+            },
+            "core":
+            {
+               "theme": "testing",
+               "edition": "premiere",
+               "titre": "Linux > Unix.",
+               "author": "Linus Torvalds"
+            }
+         },
+         {
+            "id":
+            {
+               "id":"04"
+            },
+            "core":
+            {
+               "theme": "politique",
+               "edition": "second",
+               "titre": "Biden 2020: Faude ou légétimité ?",
+               "author": "Donald J. Trump"
+            }
+         },
+
+         {
+            "id":
+            {
+               "id":"06"
+            },
+            "core":{
+               "theme": "politique",
+               "edition": "Premier",
+               "titre": "Trump 2020: News Faker 101.",
+               "author": "Joe R. Biden"
+            }
+         }
+      ]
+   }
+}
