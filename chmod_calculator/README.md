@@ -18,3 +18,11 @@ Examples:<br/>
 #### Options
  -h --help:      show help page in terminal<br/>
  -v --version:   show version in terminal<br/>
+
+#### Command examples with python:
+python main.py -h<br/>
+python main.py rxwr-xr--<br/>
+
+#### Command examples with sh:
+sh start.sh --version<br/>
+sh start.sh rxwr-xr--<br/>
