@@ -7,17 +7,20 @@
 # ==================================================================================================
 """Chmod Calculator.
 
-Usage:
-  chmod_calc.py <perm>
-  chmod_calc.py (-h | --help)
-  chmod_calc.py (-h | --version)
+    The <perm> argument must start with a 'r' since docopt do manage argument starting with "-" or "--"
 
-examples:
-  chmod_calc.py r-xr-xrwx returns 557
-  chmod_calc.py rwxr-x--- returns 750
-Options:
-  -h --help         Show this screen.
-  -v --version      Show version.
+    Usage:
+        chmod_calc.py <perm>
+        chmod_calc.py (-h | --help)         Show help page
+        chmod_calc.py (-h | --version)      Show version
+
+    examples:
+        chmod_calc.py r-xr-xrwx returns 557
+        chmod_calc.py rwxr-x--- returns 750
+
+    Options:
+        -h --help         Show this screen.
+        -v --version      Show version.
 """
 
 
@@ -34,6 +37,10 @@ from docopt import docopt
 # ==================================================================================================
 # VARIABLES
 # ==================================================================================================
+
+argument = docopt(__doc__, version="alpha 1.0")
+perm_arg = argument.get("<perm>")
+
 
 r = 4
 w = 2
@@ -84,14 +91,12 @@ def fnc_calc(perm):
 # SCRIPT
 # ==================================================================================================
 
-if __name__ == "__main__":
-    argument = docopt(__doc__, version="alpha 1.0")
 
 
-    if argument["<perm>"]:
-        perm = argument["<perm>"]
 
-        print(fnc_calc(perm))
+if perm_arg:
+    print(fnc_calc(perm_arg))
 
-else:
-    exit()
+
+
+
