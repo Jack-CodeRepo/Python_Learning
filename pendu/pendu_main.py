@@ -9,217 +9,173 @@
 
 # import framework GUI tkinter
 import tkinter as tk
-from tkinter import filedialog
 
 # import module standard python
-import configparser
-import os
 import random
 import time
-
+import json
 
 # import liste
 from lists import words
 
 # import des éléments modifiables
-import classes.elements.player
-import classes.elements.mot
-import classes.elements.lettre
+import classes.elements.player  as playerCls
+import classes.elements.mot     as motCls
+import classes.elements.lettre  as lettreCls
 
 # import des composants d'interface
-import classes.interface.menu_bar
-import classes.interface.bouton
-import classes.interface.saisie
-import classes.interface.display
+import classes.interface.menu_bar   as menu_bar
+import classes.interface.bouton     as bouton
+import classes.interface.saisie     as saisie
+import classes.interface.display    as display
+
+
 
 # ==================================================================================================
 #   VARIABLES GLOBALES
 # ==================================================================================================
 
 # fichier de sauvegarde
-save_file = "misc/save_file.txt"
-# fichier de conf
-conf_file = "misc/pendu.conf"
+save_file = "misc/players.json"
 # attribution de la liste des mots à deviner en variable
 words_list = words.MHWI
 
-# ==================================================================================================
-#   DICT
-# ==================================================================================================
 
 
 # ==================================================================================================
-#   LISTS
+#   OBJETS
 # ==================================================================================================
+
+joueur = playerCls.class_player()
+mot_visible = motCls.class_mot()
+mot_cache = motCls.class_mot()
+lettre = lettreCls.class_lettre()
+
+
+
+# ==================================================================================================
+#   PLAYERS JSON
+# ==================================================================================================
+
+with open(save_file, 'r') as f:
+    data_players = json.load(f)
+
 
 
 # ==================================================================================================
 #   FONCTIONS
 # ==================================================================================================
 
-# fonctions liées au fichier pendu.conf
-
-def modify_conf(section, option, value):
-    """
-        modifier la valeure d'une option du fichier pendu.conf
-
-        :param section: section de l'option ex: [FILES]
-        :type section: str
-        :param option: option à modifier ex: save_file
-        :type option: str
-        :param value: valeur de l'option à modifier
-        :type value: str
-    """
-    config = configparser.ConfigParser()
-    config.read(conf_file)
-    config.set(section, option, value)
-
-    with open(conf_file, 'w') as configfile:
-        config.write(configfile)
+def write_json():
+    with open(save_file, "w") as f:
+        json.dump(data_players, f, indent=4)
 
 
 
-def get_config_element(section, option):
-    """
-        recupere la valeure d'une option du fichier pendu.conf
-
-        :param section: section de l'option ex: [FILES]
-        :type section: str
-        :param option: option à modifier ex: save_file
-        :type option: str
-        :param value: valeur de l'option à modifier
-        :type value: str
-    """
-    config = configparser.ConfigParser()
-    config.read(conf_file)
-    value = config.get(section, option)
-
-    return value
+def get_score(playerName):
+    score = data_players["players"][playerName]
+    return score
 
 
 
-# fonctions liées à l'interface autre que le menu
-def add_player(name):
-    """
-        ajoute un joueur dans le fichier de sauvegarde
+def add_player(playerName):
+    score = "10"
+    added_data = {playerName: score}
+    temp = data_players["players"]
+    temp.update(added_data)
 
-        :param name: nom du joueur à ajouter
-        :type name: str
-    """
-
-    check_empty_file = os.stat(save_file).st_size == 0
-    name = name
-    if check_empty_file:
-        with open(save_file, 'a') as fichier:
-            fichier.write(f"{name}=10")
-
-    if not check_empty_file:
-        with open(save_file, 'a') as fichier:
-                fichier.write(f"\n{name}=10")
-
-
-def get_list_players():
-    """
-        recupere la liste des joueurs enregistré dans le fichier de sauvegarde
-
-        :return: liste des joueurs
-        :rtype: list
-    """
-
-    with open(save_file, 'r') as fichier:
-        lignes = fichier.readlines()
-        joueur = []
-        for l in lignes:
-            nom_joueur = l.split("=")
-            joueur.append(nom_joueur[0])
-    return joueur
+    write_json()
 
 
 
-def get_score_from_save(name):
-    """
-        récupere le score du joueur à partir du fichier de sauvegarde
+def delete_player(playerName):
+    pName = playerName.lower()
+    if pName in data_players["players"]:
+        del data_players["players"][pName]
 
-        :param name: nom du joueur
-        :type name: str
-        :return: score du joueur
-        :rtype: int
-    """
-
-    with open(save_file, 'r') as fichier:
-        lignes = fichier.readlines()
-        for l in lignes:
-            nom_joueur = l.split("=")[0]
-            score = l.split("=")[1]
-            if name == nom_joueur:
-                return score
+        write_json()
 
 
 
-def write_player_score(name: str, score:int):
-    """
-        ecris le score du joueur dans le fichier de sauvegarde
-
-        :param name: nom du joueur
-        :type name: str
-        :param score: score du joueur a ecrire
-        :type score: int
-    """
-
-    fichier = open(save_file, 'r')
-    lignes = fichier.readlines()
-    fichier.close()
-
-    list_player = get_list_players()
-    for l in lignes:
-        if name in list_player:
-            n = l.split("=")[0]
-            s = l.split("=")[1]
-            index = list_player.index(n)
-            fichier = open(save_file, 'w')
-
-            if name == n :
-                lignes[index] = f"{name}={score}"
-            
-            else:
-                lignes[index] = f"{n}={s}"
-
-            fichier.writelines(lignes)
-            fichier.close()
+def check_player(playerName):
+    if playerName in data_players["players"]:
+        joueur.set_name(playerName)
+        joueur.set_score(get_score(playerName))
+    else:
+        add_player(playerName)
+        joueur.set_name(playerName)
+        joueur.set_score(get_score(playerName))
 
 
 
-def delete_player(name):
-    """
-        supprime un joueur
+def update_score(playerName, score):
+    if playerName in data_players["players"]:
+        data_players["players"][playerName] = score
 
-        :param name: nom du joueur à supprimer
-        :type name: str
-    """
-    fichier = open(save_file, 'r')
-    lignes = fichier.readlines()
-    fichier.close()
+    write_json()
+
+
+
+def check_lettre():
+    l = lettre.get_name()
+    m = mot_visible.get_name()
+    mc = mot_cache.get_name()
+
+    mc_list = []
+    mc_display_list = []
+
+    if not mc:
+        mc = hide_word(m)
+
+    for i in range(len(m)):
+        if l == m[i]:
+            mc_list.append(l)
+        elif mc[i].isalpha():
+            mc_list.append(mc[i])
+        elif mc[i] == "-":
+            mc_list.append("-")
+        else:
+            mc_list.append("_")
+
+    if l not in m:
+        mot_visible.lower_tentative(1)
+
+    mc = "".join(mc_list)
+    mot_cache.set_name(mc)
+
+    for i in mc:
+        mc_display_list.append(i+" ")
     
-    list_player = get_list_players()
-    for l in lignes:
-        if name in list_player:
-            n = l.split("=")[0]
-            s = l.split("=")[1]
-            index = list_player.index(n)
-            fichier = open(save_file, 'w')
-
-            if name == n :
-                lignes[index] = ""
-            
-            else:
-                lignes[index] = f"{n}={s}"
-
-            fichier.writelines(lignes)
-            fichier.close()
+    mc_display = "".join(mc_display_list)
+    string = f"{mc_display}"
+    return string
 
 
 
+def check_score(playerName):
+    string_output = ""
+    tentative = mot_visible.get_tentative()
 
+    if "_" not in mot_cache.get_name():
+        joueur.increase_score(5)
+        update_score(playerName, joueur.get_score())
+        string_output = f"Félicitations! Vous avez gagné! Votre score est de {joueur.get_score()}"
+
+    else:
+        if tentative == 0:
+            joueur.lower_score(2)
+            update_score(playerName, joueur.get_score())
+            string_output = f"Il vous reste {tentative} tentative, vous avez perdu."
+
+        else:
+            string_output = f"Il vous reste {tentative} tentative."
+
+    if joueur.get_score == 0:
+        delete_player(playerName)
+        string_output = f"Vous avez {joueur.get_score()} en score. \n Votre sauvegarde a été supprimée."
+
+
+    return string_output
 
 
 
@@ -251,7 +207,7 @@ def pick_random_word(list_word):
     """
 
     word = random.choice(list_word)
-    return str(word)
+    return str(word).upper()
 
 
 
@@ -289,156 +245,44 @@ class interface_main(tk.Frame):
         tk.Frame.__init__(self)
         self.parent = parent
 
-        self.player = classes.elements.player.class_player()
-        self.mot = classes.elements.mot.class_mot()
-        self.mot_cache = classes.elements.mot.class_mot()
-        self.lettre = classes.elements.lettre.class_lettre()
-
-        self.main_display = classes.interface.display.display(parent, 0, 0, 30, 10, 20).get_text()
-        self.select_player_input = classes.interface.saisie.saisie(parent, 0, 1, 20, 10, "nom du joueur")
-        self.pendu_play_button = classes.interface.bouton.bouton(parent, 1, 1, "jouer", self.pendu_game)
+        self.main_display = display.display(parent, 0, 0, 30, 10, 20).get_text()
+        self.select_player_input = saisie.saisie(parent, 0, 1, 20, 10, "nom du joueur")
+        self.pendu_play_button = bouton.bouton(parent, 1, 1, "jouer", self.pendu_game)
 
 
     def pendu_game(self):
         mot = pick_random_word(words_list).upper()
-        self.mot.set_name(mot)
-        self.mot.set_tentative(9)
-        self.mot_cache.set_name("")
-        self.check_player()
-        self.lettre_button = classes.interface.bouton.bouton(self.parent, 2, 1, "valider lettre", self.get_letter)
-        self.lettre_input = classes.interface.saisie.saisie(self.parent, 2, 2, 2, 1, "lettre")
-        self.hide()
+        mot_visible.set_name(mot)
+        mot_visible.set_tentative(9)
+        mot_cache.set_name("")
+
+        playerName = str(self.select_player_input.get_value()).lower()
+
+        check_player(playerName)
+
+        self.lettre_button = bouton.bouton(self.parent, 2, 1, "valider lettre", self.valider_lettre)
+        self.lettre_input = saisie.saisie(self.parent, 2, 2, 2, 1, "lettre")
+        self.hide_word()
 
 
-    def get_letter(self):
-        a = self.lettre_input.get_value()
-        a = str(a).upper()
-        self.lettre.set_name(a)
-        time.sleep(1)
-        self.check_lettre()
-        self.check_score()
+    def valider_lettre(self):
+        l = self.lettre_input.get_value()
+        l = str(l).upper()
+        lettre.set_name(l)
+
+        str_checked = check_lettre()
+        str_score = check_score(joueur.get_name())
+        affichage(self.main_display, f"{str_checked} \n {str_score}")
+
+        if mot_visible.get_tentative() == 0:
+            self.lettre_button.forget_button()
+            self.lettre_input.forget_saisie_label()
+            self.lettre_input.forget_saisie()
 
 
-
-    def check_player(self):
-        a = str(self.select_player_input.get_value()).upper()
-        self.player.set_name(a)
-        nom_joueur = self.player.get_name()
-
-        players = get_list_players()
-
-        if a:
-            if players:
-                if nom_joueur in players:
-                    # si le joueur existe
-                    for p in players:
-                        if nom_joueur == p:
-                            self.player.set_name(nom_joueur)
-                            s = get_score_from_save(nom_joueur)
-                            self.player.set_score(s)
-                            string = f"joueur: {self.player.get_name()} // score: {self.player.get_score()}"
-                            affichage(self.main_display, string)
-                else:
-                    # si le joueur n'existe pas
-                    self.player.set_name(nom_joueur)
-                    self.player.set_score(10)
-                    add_player(nom_joueur)
-                    string = f"joueur: {self.player.get_name()} // score: {self.player.get_score()}"
-                    affichage(self.main_display, string)
-            # si le fichier de sauvegarde est vide
-            else:
-                self.player.set_name(nom_joueur)
-                self.player.set_score(10)
-                add_player(nom_joueur) 
-                string = f"joueur: {self.player.get_name()} // score: {self.player.get_score()}"
-                affichage(self.main_display, string)
-        else:
-            string = "Renseignez un nom de joueur"
-            affichage(self.main_display, string)
-
-
-
-
-    def hide(self):
-        a = hide_word(self.mot.get_name())
+    def hide_word(self):
+        a = hide_word(mot_visible.get_name())
         affichage(self.main_display, a)
-
-
-
-    def check_lettre(self):
-        l = self.lettre.get_name()
-        m = self.mot.get_name()
-        mc = self.mot_cache.get_name()
-        mc_list = []
-        mc_display_list = []
-
-        if not mc:
-            mc = hide_word(m)
-
-        for i in range(len(mc)):
-            if l == m[i]:
-                mc_list.append(l)
-            elif mc[i].isalpha():
-                mc_list.append(mc[i])
-            elif mc[i] == "-":
-                mc_list.append("-")
-            else:
-                mc_list.append("_")
-
-        if l not in m:
-            self.mot.lower_tentative(1)
-
-        mc = "".join(mc_list)
-        self.mot_cache.set_name(mc)
-
-
-        for i in mc:
-            mc_display_list.append(i+" ")
-        
-        mc_display = "".join(mc_display_list)
-        string = f"{mc_display} \n Tentatives restantes: {self.mot.get_tentative()}"
-        affichage(self.main_display, string)
-
-
-
-
-    def check_score(self):
-        t = self.mot.get_tentative()
-        string = ""
-        if "_" not in self.mot_cache.get_name():
-            self.player.increase_score(5)
-            write_player_score(str(self.player.get_name()), int(self.player.get_score()))
-            string = f"Félicitations! Vous avez gagné! Votre score est de {self.player.get_score()}"
-            affichage(self.main_display, string)
-            self.lettre_button.forget_button()
-            self.lettre_input.forget_saisie_label()
-            self.lettre_input.forget_saisie()
-
-        else:
-            if t == 0:
-                self.player.lower_score(5)
-                self.lettre_button.forget_button()
-                self.lettre_input.forget_saisie_label()
-                self.lettre_input.forget_saisie()
-
-                write_player_score(str(self.player.get_name()), int(self.player.get_score()))
-                string = f"Il vous reste {t} tentative, vous avez perdu"
-                affichage(self.main_display, string)
-
-        if self.player.get_score() == 0:
-            delete_player(self.player.get_name())
-            string = f"Vous avez {self.player.get_score()} en score. \n Votre sauvegarde a été supprimée."
-            affichage(self.main_display, string)
-            self.lettre_button.forget_button()
-            self.lettre_input.forget_saisie_label()
-            self.lettre_input.forget_saisie()
-
-
-
-
-
-
-
 
 
 
@@ -446,17 +290,9 @@ class interface_main(tk.Frame):
 #   SCRIPT
 # ==================================================================================================
 root = tk.Tk()
-
-save_file = get_config_element("FILES", "save_file")
-menu = classes.interface.menu_bar.class_menu_bar()
-
-
+menu = menu_bar.class_menu_bar()
 root.title("Jeu du pendu")
 root.config(menu=menu)
-
 root.geometry("600x200")
-
-
 interface_main(root)
-
 root.mainloop()
