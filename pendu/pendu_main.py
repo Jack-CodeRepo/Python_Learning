@@ -170,7 +170,7 @@ def check_score(playerName):
         else:
             string_output = f"Il vous reste {tentative} tentative."
 
-    if joueur.get_score == 0:
+    if joueur.get_score() == 0:
         delete_player(playerName)
         string_output = f"Vous avez {joueur.get_score()} en score. \n Votre sauvegarde a été supprimée."
 
